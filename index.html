@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Roshni!</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Welcome Button Screen */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #2c3e50, #000000);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 1s ease;
+        }
+        .btn-open {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff4757;
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: none; /* Hidden initially */
+        }
+
+        /* Part 1: Emotional Message & Slideshow */
+        #part1 {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .slideshow-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px) brightness(40%);
+            transition: background-image 1.5s ease-in-out;
+        }
+        .photo-frame {
+            width: 280px;
+            height: 380px;
+            border: 8px solid white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1.5s ease-in-out;
+            margin-bottom: 25px;
+        }
+        .message-box {
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            animation: fadeIn 2s ease;
+        }
+
+        /* Part 2: Kerala Grand Celebration (Hidden for 1 min) */
+        #part2 {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('kerala.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease-in-out;
+        }
+        .wishes-marquee {
+            width: 90%;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
+            color: #ffd700;
+            margin-top: 20px;
+        }
+
+        /* Rainbow Animated Text */
+        .rainbow-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #ff4757, #ffa500, #fed330, #2ed573, #1e90ff, #a55eea, #ff4757);
+            background-size: 400% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 5s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px #ff4757; }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px #ff4757; }
+            100% { transform: scale(1); box-shadow: 0 0 20px #ff4757; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="welcome-screen">
+        <h2 style="margin-bottom: 20px; font-weight: 300;">A Special Gift for Roshni</h2>
+        <button class="btn-open" onclick="startCelebration()">Open Gift 🎁</button>
+    </div>
+
+    <div class="container" id="main-container">
+        
+        <div id="part1">
+            <div class="slideshow-bg" id="bg-slide"></div>
+            <div class="photo-frame" id="photo-frame"></div>
+            <div class="message-box">
+                <p>✨ Happy Birthday, Roshni ✨</p>
+                <p style="font-size: 1rem; margin-top: 10px; font-style: italic; color: #e0e0e0;">
+                    "Every day with you feels like a blessing, but today is extra special. Thank you for bringing so much color, joy, and warmth into the world. May this year ahead bring you endless laughter and all the happiness you truly deserve..."
+                </p>
+            </div>
+        </div>
+
+        <div id="part2">
+            <h1 class="rainbow-text">Happy Birthday Roshni! 🎉</h1>
+            <div class="wishes-marquee">
+                <marquee behavior="scroll" direction="left" scrollamount="8">
+                    🎂 Happy Birthday to you, Roshni! (English) &nbsp;&nbsp;•&nbsp;&nbsp; 
+                    🎈 റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! (Malayalam) &nbsp;&nbsp;•&nbsp;&nbsp; 
+                    🌸 രോഷ്നിക്ക് ഹൃദയം നിറഞ്ഞ ജന്മദിനാശംസകൾ നേരുന്നു! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    ✨ രോഷ്നി, ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🎁 റോഷ്നി, നിങ്ങൾക്ക് ജന്മദിനാശംസകൾ നേരുന്നു! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🍰 രോഷ്നിക്ക് ജന്മദിനാശംസകൾ നേരുന്നു, ഈ ദിവസം സന്തോഷം നിറഞ്ഞതാകട്ടെ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🌹 റോഷ്നിക്ക് ഒരായിരം ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    ⭐ റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! നിങ്ങളുടെ എല്ലാ സ്വപ്നങ്ങളും സഫലമാകട്ടെ &nbsp;&nbsp;•&nbsp;&nbsp;
+                    💝 രോഷ്നി, ജന്മദിനാശംസകൾ! എന്നും സന്തോഷത്തോടെ ഇരിക്കുക &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🎉 റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! നിങ്ങളുടെ ജീവിതം എപ്പോഴും പ്രകാശമയമാകട്ടെ &nbsp;&nbsp;•&nbsp;&nbsp;
+                    💐 രോഷ്നിക്ക് ഹൃദയം നിറഞ്ഞ ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🌟 രോഷ്നിക്ക് ജന്മദിനാശംസകൾ! ഒരു മികച്ച വർഷം ആശംസിക്കുന്നു &nbsp;&nbsp;•&nbsp;&nbsp;
+                    ☀️ റോഷ്നി, ജന്മദിനാശംസകൾ! സന്തോഷം നിറഞ്ഞ ഒരു ജന്മദിനം നേരുന്നു &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🍬 റോഷ്നിക്ക് മധുരമേറിയ ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🔮 റോഷ്നിക്ക് എല്ലാവിധ ജന്മദിനാശംസകളും നേരുന്നു! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    💎 റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! ജീവിതം എന്നും മനോഹരമാകട്ടെ &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🎵 റോഷ്നി, സന്തോഷം നിറഞ്ഞ ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    👑 റോഷ്നിക്ക് രാജകീയമായ ജന്മദിനാശംസകൾ നേരുന്നു! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    💖 റോഷ്നിക്ക് സ്നേഹം നിറഞ്ഞ ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🌻 റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! നിങ്ങളുടെ ദിവസം മനോഹരമാകട്ടെ &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🎀 റോഷ്നിക്ക് ജന്മദിനാശംസകൾ! എന്നും ചിരിച്ചുകൊണ്ട് ജീവിക്കുക &nbsp;&nbsp;•&nbsp;&nbsp;
+                    🍫 റോഷ്നിക്ക് ചോക്ലേറ്റ് മധുരമുള്ള ജന്മദിനാശംസകൾ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                    💫 റോശ്നിക്ക് പുട്ടേഡിന രോജു ശുഭാകാംക്ഷലു! (Telugu) &nbsp;&nbsp;•&nbsp;&nbsp; 
+                    🎉 रोशनी को जन्मदिन की हार्दिक शुभकामनाएं! (Hindi) &nbsp;&nbsp;•&nbsp;&nbsp; 
+                    🎂 രോഷ്നിക്ക് ജന്മദിനാശംസകൾ! (Malayalam Again)
+                </marquee>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Array of your photo paths
+        const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
+        let currentPhotoIndex = 0;
+
+        function changePhotos() {
+            const frame = document.getElementById('photo-frame');
+            const bg = document.getElementById('bg-slide');
+            
+            // Apply image to frame and blurred background
+            frame.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
+            bg.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
+            
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+        }
+
+        function startCelebration() {
+            // Hide welcome screen
+            document.getElementById('welcome-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
+            }, 1000);
+
+            // Show container
+            document.getElementById('main-container').style.display = 'block';
+
+            // Start music
+            const music = document.getElementById('bg-music');
+            music.play().catch(error => console.log("Playback interaction error:", error));
+
+            // Run photo slideshow every 3 seconds
+            changePhotos();
+            setInterval(changePhotos, 3000);
+
+            // Transition to Kerala Background & Multi-language wishes after 1 minute (60000 milliseconds)
+            setTimeout(() => {
+                const part2 = document.getElementById('part2');
+                part2.style.opacity = '1';
+                part2.style.pointerEvents = 'auto';
+            }, 60000); 
+        }
+    </script>
+</body>
+</html>
