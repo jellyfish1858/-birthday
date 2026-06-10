@@ -28,7 +28,7 @@
             justify-content: center;
             align-items: center;
             z-index: 999;
-            transition: opacity 1s ease;
+            transition: opacity 1s ease, transform 1s ease;
         }
         .btn-open {
             padding: 15px 40px;
@@ -40,6 +40,10 @@
             cursor: pointer;
             box-shadow: 0 0 20px #ff4757;
             animation: pulse 2s infinite;
+            transition: transform 0.2s ease;
+        }
+        .btn-open:active {
+            transform: scale(0.95);
         }
 
         /* Main Container */
@@ -59,6 +63,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            transition: opacity 2s ease-in-out;
         }
         .slideshow-bg {
             position: absolute;
@@ -66,7 +71,7 @@
             z-index: -1;
             background-size: cover;
             background-position: center;
-            filter: blur(5px) brightness(40%);
+            filter: blur(8px) brightness(35%);
             transition: background-image 1.5s ease-in-out;
         }
         .photo-frame {
@@ -82,20 +87,22 @@
         }
         .message-box {
             max-width: 600px;
+            width: 90%;
             padding: 25px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             border-radius: 15px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             font-size: 1.2rem;
             line-height: 1.6;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         /* Part 2: Kerala Background Celebration */
         #part2 {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('kerala.jpg');
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('kerala.jpg');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -118,24 +125,25 @@
             -webkit-text-fill-color: transparent;
             animation: rainbow 5s linear infinite;
             margin-bottom: 30px;
+            padding: 0 10px;
         }
 
         #multilingual-box {
             width: 85%;
             max-width: 700px;
-            min-height: 130px;
+            min-height: 160px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         #multilingual-wish {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #ffd700;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            transition: opacity 0.5s ease-in-out;
-            opacity: 1;
+            transition: opacity 0.6s ease-in-out;
+            opacity: 0;
         }
 
         /* Animations */
@@ -144,7 +152,15 @@
             50% { transform: scale(1.05); box-shadow: 0 0 35px #ff4757; }
             100% { transform: scale(1); box-shadow: 0 0 20px #ff4757; }
         }
-        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes rainbow { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -154,7 +170,7 @@
     </audio>
 
     <div id="welcome-screen">
-        <h2 style="margin-bottom: 20px; font-weight: 300;">A Special Gift for Roshni</h2>
+        <h2 style="margin-bottom: 20px; font-weight: 300; letter-spacing: 1px;">A Special Gift for Roshni</h2>
         <button class="btn-open" onclick="startCelebration()">Open Gift 🎁</button>
     </div>
 
@@ -164,8 +180,8 @@
             <div class="slideshow-bg" id="bg-slide"></div>
             <div class="photo-frame" id="photo-frame"></div>
             <div class="message-box">
-                <p>✨ Happy Birthday, Roshni ✨</p>
-                <p style="font-size: 1rem; margin-top: 10px; font-style: italic; color: #e0e0e0;">
+                <p style="font-weight: bold; color: #ff4757;">✨ Happy Birthday, Roshni ✨</p>
+                <p style="font-size: 1.05rem; margin-top: 12px; font-style: italic; color: #e0e0e0;">
                     "Every day with you feels like a blessing, but today is extra special. Thank you for bringing so much color, joy, and warmth into the world. May this year ahead bring you endless laughter and all the happiness you truly deserve..."
                 </p>
             </div>
@@ -184,19 +200,32 @@
         const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
         let currentPhotoIndex = 0;
 
-        // Cleaned up English-script translations
+        // Custom ordered wishes text list
         const wishes = [
-            "Happy Birthday to you, Roshni! (English)",
-            "Roshnikku Hrudayam Nirannja Janmadina Ashamsakal! (Malayalam)",
-            "Roshni ki Puttina Roju Shubhakankshalu! (Telugu)",
-            "Roshni ko Janamdin ki Hardik Shubhkaamnayen! (Hindi)",
-            "Roshni unaku Iniya Pirandhanaal Vazhthukkal! (Tamil)",
-            "Roshni ge Huttida Habbada Shubhashayagalu! (Kannada)",
-            "Roshni ne Janmadinas ni Hardik Shubhkamnao! (Gujarati)",
-            "Roshni la Wadhdiwasachya Hardik Shubhechha! (Marathi)",
-            "Roshni ku Janmadina Ra Hardika Shubechha! (Odia)",
-            "Roshni tomake Jonmodiner Shubhechha! (Bengali)",
-            "Roshni nu Janamdin diyan Lakh Lakh Vadhaiyan! (Punjabi)"
+            "Happy Birthday to you, Roshni! May you have a wonderful year ahead!",
+            "Hindi : Roshni, aapko janmadin ki bahut-bahut shubhkamnayen!",
+            "Punjabi : Roshni, tuhanu janmadin diyan bahut-bahut mubaarakan!",
+            "Urdu : Roshni, aap ko saalgerah bahut bahut mubaarak ho!",
+            "Kashmiri : Roshni, tche chhey zaadah dohaich waariyah waariyah mubaarakbaad!",
+            "Sindhi : Roshni, tokhe janmadin jiyoon lakh lakh vaadhayoon!",
+            "Marathi : Roshni, tula vaadhdivsachya hardik shubhechha!",
+            "Gujarati : Roshni, tamne janmadivasni hardik shubhechhaao!",
+            "Konkani : Roshni, tula jalmadi sacho hardik parbin!",
+            "Tamil : Roshni, ungalukku iniya pirandhanaal vaazhthukkal!",
+            "Telugu : Roshni, meeku puttinaroju shubhakaankshalu!",
+            "Kannada : Roshni, nimage huttuhabbada haardika shubhaashayagalu!",
+            "Malayalam : Roshni, hridayam niranja janmadinaashamsakal!",
+            "Bengali : Roshni, tomake jonmodiner onek onek shubhechha!",
+            "Odia : Roshni, apananku janmadinara aneka aneka shubhechha!",
+            "Maithili : Roshni, ahaanka janamdinak bahut-bahut shubhkamna!",
+            "Santhali : Roshni, amag janam maha re ayma sarhaw!",
+            "Assamese : Roshni, tomak jonmodinor oxex xubhechha jonalu!",
+            "Manipuri : Roshni, nangi pokpa numitki yaifa-paojel pijari!",
+            "Bodo : Roshni, nongthangno jonom sanni gaham hamzlaynay bawhorbay!",
+            "Nepali : Roshni, tapailaai janmadinko haardik shubhkamna!",
+            "Dogri : Roshni, tuseengi janamdihaade di mate-mate badhai!",
+            "Sanskrit : Roshni, tava janmadivasasya shubhaashayaah!",
+            "Happy Birthday to you, Roshni! May you have a wonderful year ahead!"
         ];
         let currentWishIndex = 0;
 
@@ -204,7 +233,7 @@
             const frame = document.getElementById('photo-frame');
             const bg = document.getElementById('bg-slide');
             
-            if(frame && bg) {
+            if(frame && bg && photos.length > 0) {
                 frame.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
                 bg.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
                 currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
@@ -215,18 +244,22 @@
             const wishElement = document.getElementById('multilingual-wish');
             if(wishElement) {
                 wishElement.style.opacity = 0;
+                
+                // Allow CSS transition to finish fading out before changing text
                 setTimeout(() => {
                     wishElement.innerText = wishes[currentWishIndex];
                     wishElement.style.opacity = 1;
                     currentWishIndex = (currentWishIndex + 1) % wishes.length;
-                }, 500);
+                }, 600); 
             }
         }
 
         function startCelebration() {
-            document.getElementById('welcome-screen').style.opacity = '0';
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.opacity = '0';
+            welcome.style.transform = 'scale(0.9)';
             setTimeout(() => {
-                document.getElementById('welcome-screen').style.display = 'none';
+                welcome.style.display = 'none';
             }, 1000);
 
             document.getElementById('main-container').style.display = 'block';
@@ -235,16 +268,18 @@
             music.play().catch(err => console.log("Audio play error:", err));
 
             changePhotos();
-            setInterval(changePhotos, 3000);
+            setInterval(changePhotos, 3500);
 
-            // Trigger the Kerala background and one-by-one text swap after exactly 1 minute
+            // Change 60000 to 5000 if you want to test it in 5 seconds instead of 1 minute!
             setTimeout(() => {
+                document.getElementById('part1').style.opacity = '0';
+                
                 const part2 = document.getElementById('part2');
                 part2.style.opacity = '1';
                 part2.style.pointerEvents = 'auto';
                 
                 rotateWishes(); 
-                setInterval(rotateWishes, 4000); // Changes language every 4 seconds smoothly
+                setInterval(rotateWishes, 4500); 
             }, 60000); 
         }
     </script>
