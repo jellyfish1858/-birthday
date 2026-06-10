@@ -184,12 +184,8 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <audio id="voiceover-audio">
-        <source src="voiceover.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="fireworks-audio">
-        <source src="fireworks.mp3" type="audio/mpeg">
+    <audio id="song2-audio">
+        <source src="song2.mp3" type="audio/mpeg">
     </audio>
 
     <canvas id="fireworks-canvas"></canvas>
@@ -225,7 +221,7 @@
         const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
         let currentPhotoIndex = 0;
 
-        // Your updated custom timings!
+        // The text will now change to the beat/timing of song2.mp3
         const syncedWishes = [
             { time: 0.0, text: "Happy Birthday to you, Roshni! May you have a wonderful year ahead!" },
             { time: 5.5, text: "Hindi : Roshni, aapko janmadin ki bahut-bahut shubhkamnayen!" },
@@ -254,15 +250,16 @@
         ];
 
         let currentWishIndex = -1;
-        const voiceoverElement = document.getElementById('voiceover-audio');
-        const fireworksAudioElement = document.getElementById('fireworks-audio');
+        let fireworksStarted = false; // Safety check
+        const song2Element = document.getElementById('song2-audio');
         const wishTextElement = document.getElementById('multilingual-wish');
         const multilingualBox = document.getElementById('multilingual-box');
 
-        // Audio sync logic
-        voiceoverElement.addEventListener('timeupdate', () => {
-            const currentTime = voiceoverElement.currentTime;
+        // Audio sync logic for the second song
+        song2Element.addEventListener('timeupdate', () => {
+            const currentTime = song2Element.currentTime;
             let activeIndex = -1;
+            
             for (let i = 0; i < syncedWishes.length; i++) {
                 if (currentTime >= syncedWishes[i].time) {
                     activeIndex = i;
@@ -279,14 +276,22 @@
                 }, 400); 
                 currentWishIndex = activeIndex;
             }
+
+            // TRIGGER FIREWORKS at 124 seconds (5 seconds after the very last message)
+            if (currentTime >= 124.0 && !fireworksStarted) {
+                fireworksStarted = true;
+                multilingualBox.style.opacity = 0;
+                startFireworks();
+            }
         });
 
-        // Trigger fireworks when the voiceover finishes
-        voiceoverElement.addEventListener('ended', () => {
-            // Fade out the text box
-            multilingualBox.style.opacity = 0;
-            // Start fireworks animation and sound
-            startFireworks();
+        // Backup fireworks trigger if the song ends before 124 seconds
+        song2Element.addEventListener('ended', () => {
+            if(!fireworksStarted) {
+                fireworksStarted = true;
+                multilingualBox.style.opacity = 0;
+                startFireworks();
+            }
         });
 
         function changePhotos() {
@@ -307,27 +312,21 @@
 
             document.getElementById('main-container').style.display = 'block';
 
-            // --- THE CRITICAL FIX: Wake up all audios so the browser doesn't block them later ---
-            voiceoverElement.play().then(() => {
-                voiceoverElement.pause();
-                voiceoverElement.currentTime = 0;
-            }).catch(e => console.log("Voiceover preload blocked:", e));
-
-            if(fireworksAudioElement) {
-                fireworksAudioElement.play().then(() => {
-                    fireworksAudioElement.pause();
-                    fireworksAudioElement.currentTime = 0;
-                }).catch(e => console.log("Fireworks audio preload blocked:", e));
-            }
-            // ----------------------------------------------------------------------------------
+            // Wake up audio elements for strict mobile browsers
+            song2Element.play().then(() => {
+                song2Element.pause();
+                song2Element.currentTime = 0;
+            }).catch(e => console.log("Song 2 preload blocked:", e));
 
             const music1 = document.getElementById('bg-music');
-            music1.play().catch(err => console.log("Audio play error:", err));
+            music1.play().catch(err => console.log("Audio 1 play error:", err));
 
             changePhotos();
             setInterval(changePhotos, 3500);
 
-            // 4 minutes 17 seconds transition
+            // --- TESTING TIMER ---
+            // Set to 5000 (5 seconds) so you can test it immediately.
+            // CHANGE THIS TO 257000 BEFORE YOU SEND IT TO HER!
             setTimeout(() => {
                 document.getElementById('part1').style.opacity = '0';
                 const part2 = document.getElementById('part2');
@@ -335,18 +334,13 @@
                 part2.style.pointerEvents = 'auto';
                 
                 music1.pause();
-                voiceoverElement.play().catch(err => console.log("Voiceover play error:", err));
+                song2Element.play().catch(err => console.log("Song 2 play error:", err));
                 
-            }, 5000); 
+            }, 5000); // <-- CHANGE THIS NUMBER BACK TO 257000 LATER
         }
 
         // --- FIREWORKS LOGIC ---
         function startFireworks() {
-            // Play fireworks sound effect
-            if(fireworksAudioElement) {
-                fireworksAudioElement.play().catch(e => console.log("Fireworks audio error:", e));
-            }
-
             const canvas = document.getElementById('fireworks-canvas');
             canvas.style.display = 'block';
             const ctx = canvas.getContext('2d');
@@ -373,49 +367,10 @@
             function animateFireworks() {
                 requestAnimationFrame(animateFireworks);
                 
-                // Clear screen with a slight fade effect
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.globalCompositeOperation = 'lighter';
 
-                // Randomly pop new fireworks
                 if (Math.random() < 0.05) {
-                    createExplosion(
-                        Math.random() * canvas.width, 
-                        Math.random() * (canvas.height / 1.5) // Keep them mostly in upper half
-                    );
-                }
-
-                // Update and draw particles
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    let p = particles[i];
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.05; // Gravity effect
-                    p.alpha -= p.decay;
-
-                    if (p.alpha <= 0) {
-                        particles.splice(i, 1);
-                        continue;
-                    }
-
-                    ctx.globalAlpha = p.alpha;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.fill();
-                }
-            }
-
-            // Adjust canvas size if window is resized
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-
-            animateFireworks();
-        }
-    </script>
-</body>
-</html>
+                    createExplosion(Math.random() * canvas.width, Math
