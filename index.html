@@ -165,8 +165,14 @@
 </head>
 <body>
 
+    <!-- Song for Part 1 -->
     <audio id="bg-music" loop>
         <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- New Song for Part 2 -->
+    <audio id="bg-music-2" loop>
+        <source src="song2.mp3" type="audio/mpeg">
     </audio>
 
     <div id="welcome-screen">
@@ -200,7 +206,6 @@
         const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
         let currentPhotoIndex = 0;
 
-        // Custom ordered wishes text list
         const wishes = [
             "Happy Birthday to you, Roshni! May you have a wonderful year ahead!",
             "Hindi : Roshni, aapko janmadin ki bahut-bahut shubhkamnayen!",
@@ -245,7 +250,6 @@
             if(wishElement) {
                 wishElement.style.opacity = 0;
                 
-                // Allow CSS transition to finish fading out before changing text
                 setTimeout(() => {
                     wishElement.innerText = wishes[currentWishIndex];
                     wishElement.style.opacity = 1;
@@ -264,13 +268,15 @@
 
             document.getElementById('main-container').style.display = 'block';
 
-            const music = document.getElementById('bg-music');
-            music.play().catch(err => console.log("Audio play error:", err));
+            // Start first song
+            const music1 = document.getElementById('bg-music');
+            const music2 = document.getElementById('bg-music-2');
+            music1.play().catch(err => console.log("Audio play error:", err));
 
             changePhotos();
             setInterval(changePhotos, 3500);
 
-            // Change 60000 to 5000 if you want to test it in 5 seconds instead of 1 minute!
+            // Timer set to 4 minutes and 17 seconds (257000 milliseconds)
             setTimeout(() => {
                 document.getElementById('part1').style.opacity = '0';
                 
@@ -278,9 +284,14 @@
                 part2.style.opacity = '1';
                 part2.style.pointerEvents = 'auto';
                 
+                // Pause first song, play second song
+                music1.pause();
+                music1.currentTime = 0; // Optional: resets the first song to the beginning
+                music2.play().catch(err => console.log("Audio 2 play error:", err));
+                
                 rotateWishes(); 
                 setInterval(rotateWishes, 4500); 
-            }, 60000); 
+            }, 257000); 
         }
     </script>
 </body>
