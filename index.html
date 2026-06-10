@@ -221,7 +221,6 @@
         const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
         let currentPhotoIndex = 0;
 
-        // The text will now change to the beat/timing of song2.mp3
         const syncedWishes = [
             { time: 0.0, text: "Happy Birthday to you, Roshni! May you have a wonderful year ahead!" },
             { time: 5.5, text: "Hindi : Roshni, aapko janmadin ki bahut-bahut shubhkamnayen!" },
@@ -250,7 +249,7 @@
         ];
 
         let currentWishIndex = -1;
-        let fireworksStarted = false; // Safety check
+        let fireworksStarted = false; 
         const song2Element = document.getElementById('song2-audio');
         const wishTextElement = document.getElementById('multilingual-wish');
         const multilingualBox = document.getElementById('multilingual-box');
@@ -277,7 +276,7 @@
                 currentWishIndex = activeIndex;
             }
 
-            // TRIGGER FIREWORKS at 124 seconds (5 seconds after the very last message)
+            // TRIGGER FIREWORKS at 124 seconds
             if (currentTime >= 124.0 && !fireworksStarted) {
                 fireworksStarted = true;
                 multilingualBox.style.opacity = 0;
@@ -285,7 +284,6 @@
             }
         });
 
-        // Backup fireworks trigger if the song ends before 124 seconds
         song2Element.addEventListener('ended', () => {
             if(!fireworksStarted) {
                 fireworksStarted = true;
@@ -304,39 +302,60 @@
             }
         }
 
+        // --- THE BULLETPROOF FIX ---
         function startCelebration() {
-            const welcome = document.getElementById('welcome-screen');
-            welcome.style.opacity = '0';
-            welcome.style.transform = 'scale(0.9)';
-            setTimeout(() => { welcome.style.display = 'none'; }, 1000);
+            try {
+                // 1. Instantly hide the welcome screen, regardless of audio loading
+                const welcome = document.getElementById('welcome-screen');
+                welcome.style.opacity = '0';
+                welcome.style.pointerEvents = 'none'; // Prevents clicking the button twice
+                setTimeout(() => { welcome.style.display = 'none'; }, 1000);
 
-            document.getElementById('main-container').style.display = 'block';
+                // 2. Show the main container immediately
+                document.getElementById('main-container').style.display = 'block';
 
-            // Wake up audio elements for strict mobile browsers
-            song2Element.play().then(() => {
-                song2Element.pause();
-                song2Element.currentTime = 0;
-            }).catch(e => console.log("Song 2 preload blocked:", e));
+                // 3. Start the first song safely
+                const music1 = document.getElementById('bg-music');
+                if (music1) {
+                    music1.play().catch(err => console.log("Audio 1 blocked by browser:", err));
+                }
 
-            const music1 = document.getElementById('bg-music');
-            music1.play().catch(err => console.log("Audio 1 play error:", err));
+                // 4. Start the slideshow
+                changePhotos();
+                setInterval(changePhotos, 3500);
 
-            changePhotos();
-            setInterval(changePhotos, 3500);
+                // 5. Safely wake up the second song with a "mute trick" for strict browsers
+                if (song2Element) {
+                    song2Element.muted = true; // Mute so we don't hear a blip
+                    song2Element.play().then(() => {
+                        song2Element.pause();
+                        song2Element.muted = false; // Unmute for later
+                        song2Element.currentTime = 0;
+                    }).catch(e => console.log("Wake up trick blocked:", e));
+                }
 
-            // --- TESTING TIMER ---
-            // Set to 5000 (5 seconds) so you can test it immediately.
-            // CHANGE THIS TO 257000 BEFORE YOU SEND IT TO HER!
-            setTimeout(() => {
-                document.getElementById('part1').style.opacity = '0';
-                const part2 = document.getElementById('part2');
-                part2.style.opacity = '1';
-                part2.style.pointerEvents = 'auto';
-                
-                music1.pause();
-                song2Element.play().catch(err => console.log("Song 2 play error:", err));
-                
-            }, 5000); // <-- CHANGE THIS NUMBER BACK TO 257000 LATER
+                // 6. Testing Timer (Set to 5 seconds right now)
+                // CHANGE THIS BACK TO 257000 BEFORE SENDING IT
+                setTimeout(() => {
+                    document.getElementById('part1').style.opacity = '0';
+                    const part2 = document.getElementById('part2');
+                    
+                    if (part2) {
+                        part2.style.opacity = '1';
+                        part2.style.pointerEvents = 'auto';
+                    }
+                    
+                    if (music1) music1.pause();
+                    if (song2Element) {
+                        song2Element.play().catch(err => console.log("Song 2 play error:", err));
+                    }
+                    
+                }, 5000); // <-- Change 5000 back to 257000!
+
+            } catch (error) {
+                console.error("Critical Error:", error);
+                alert("Something went wrong! Double check your file names.");
+            }
         }
 
         // --- FIREWORKS LOGIC ---
@@ -373,4 +392,36 @@
                 ctx.globalCompositeOperation = 'lighter';
 
                 if (Math.random() < 0.05) {
-                    createExplosion(Math.random() * canvas.width, Math
+                    createExplosion(Math.random() * canvas.width, Math.random() * (canvas.height / 1.5));
+                }
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    let p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.05; 
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.globalAlpha = p.alpha;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                }
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            animateFireworks();
+        }
+    </script>
+</body>
+</html>
