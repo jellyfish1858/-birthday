@@ -63,6 +63,8 @@
             position: relative;
             transition: opacity 2s ease-in-out;
         }
+        
+        /* Blurred Background Behind the Photo */
         .slideshow-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -83,85 +85,75 @@
             padding: 40px;
         }
         
-        /* NEW: Live Wallpaper Paper & Kerala Fog Background */
+        /* UPDATED: Custom Uploaded Background Image */
         .love-letter {
             width: 100%;
             max-width: 650px;
             max-height: 85vh;
             overflow-y: auto;
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 15px;
             text-align: left;
             font-family: 'Georgia', serif;
             
-            /* MULTIPLE BACKGROUND LAYERS FOR THE "LIVE WALLPAPER" EFFECT
-               1. A moving fog gradient (Sky blues, pinks, whites)
-               2. Small scattered red hearts (SVG Pattern)
-               3. The Paper base (A warm, semi-transparent cream/white overlay)
-               4. The Kerala Nature Image (Panning slowly in the background)
-            */
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(135,206,235,0.4) 50%, rgba(255,182,193,0.3) 100%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="80" height="80"><path fill="rgba(255,0,0,0.35)" d="M30 46.5l-.8-.7C14.7 33.3 10.5 25.5 10.5 19c0-5.5 4.5-10 10-10 3.3 0 6.3 1.6 8.1 4.1 1.8-2.5 4.8-4.1 8.1-4.1 5.5 0 10 4.5 10 10 0 6.5-4.2 14.3-18.7 26.8l-.8.7z"/></svg>'),
-                linear-gradient(rgba(255, 248, 240, 0.88), rgba(240, 248, 255, 0.92)),
-                url('kerala.jpg');
+            /* Uses your uploaded image */
+            background: url('LOVELETTER BACKGROUND.png') center/cover no-repeat;
+            background-attachment: local; /* Makes the image scroll smoothly with the text */
             
-            background-size: 200% 200%, 120px 120px, cover, 130% 130%;
-            animation: liveWallpaper 20s ease-in-out infinite, fadeIn 2s ease-in-out;
-            
-            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            animation: fadeIn 2s ease-in-out;
         }
 
         /* Custom Scrollbar for the letter */
         .love-letter::-webkit-scrollbar { width: 8px; }
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .love-letter::-webkit-scrollbar-thumb { background: #ff758c; border-radius: 10px; }
+        .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
 
-        /* Beautiful Sky Tones & Colorful Headings */
+        /* Adjusted Text Styles for Readability Over the New Image */
         .letter-title {
             font-size: 2.2rem;
-            background: linear-gradient(to right, #ff758c, #ff7eb3, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #d61c38;
             margin-bottom: 25px;
             text-align: center;
             font-style: italic;
-            font-weight: bold;
+            font-weight: 900;
             letter-spacing: 1px;
-            border-bottom: 1px solid rgba(30, 60, 114, 0.15);
+            border-bottom: 2px solid rgba(214, 28, 56, 0.3);
             padding-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.8);
         }
         
         .love-letter p {
             font-size: 1.15rem;
             line-height: 1.9;
-            color: #1a2a6c; /* Deep, beautiful night-sky blue for readability over paper */
+            color: #2b0a0a; /* Very dark crimson/brown for high contrast */
             margin-bottom: 18px;
-            font-weight: 600;
+            font-weight: 800; /* Extra bold to stand out against the background details */
+            /* Strong white glow behind text to ensure it never gets lost in the image patterns */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.8);
         }
         
         .letter-signature {
             margin-top: 40px;
-            font-size: 1.3rem !important;
-            color: #ff0844 !important; /* Romantic crimson red */
+            font-size: 1.4rem !important;
+            color: #d61c38 !important; 
             text-align: center;
-            font-weight: bold;
-            border-top: 1px solid rgba(30, 60, 114, 0.15);
+            font-weight: 900 !important;
+            border-top: 2px solid rgba(214, 28, 56, 0.3);
             padding-top: 25px;
         }
 
         .highlight-name {
             display: block;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            color: #d61c38;
             margin-top: 15px;
             letter-spacing: 3px;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.9);
         }
 
-        /* Right Side: Blurred Slideshow */
+        /* Right Side: The CLEAR Photo Frame */
         .image-column {
             flex: 1;
             height: 100%;
@@ -174,16 +166,13 @@
             width: 100%;
             max-width: 400px;
             aspect-ratio: 3/4;
-            border: 4px solid rgba(255, 255, 255, 0.6);
-            border-radius: 12px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            border: 8px solid white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
             background-size: cover;
             background-position: center;
             transition: background-image 1.5s ease-in-out;
             animation: fadeIn 2s ease-in-out;
-            
-            /* ADDED BLUR EFFECT */
-            filter: blur(6px); 
         }
 
         /* Responsive Mobile Layout */
@@ -197,7 +186,7 @@
             }
             .photo-frame {
                 max-width: 220px;
-                border-width: 3px;
+                border-width: 5px;
             }
             .text-column {
                 flex: 0.6;
@@ -289,12 +278,6 @@
             50% { background-position: 100% 50%; } 
             100% { background-position: 0% 50%; } 
         }
-        /* Live Wallpaper Animation */
-        @keyframes liveWallpaper { 
-            0% { background-position: 0% 0%, 0px 0px, center, 0% 50%; } 
-            50% { background-position: 100% 100%, 60px 60px, center, 100% 50%; } 
-            100% { background-position: 0% 0%, 120px 120px, center, 0% 50%; } 
-        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -320,14 +303,13 @@
 
     <div class="container" id="main-container">
         
-        <!-- PART 1: Love Letter and Image Slideshow -->
         <div id="part1">
             <div class="slideshow-bg" id="bg-slide"></div>
             
             <div class="text-column">
                 <div class="love-letter">
                     <h1 class="letter-title">To My Soulmate, On Your Birthday</h1>
-                    <p style="font-weight: 800; font-style: italic; font-size: 1.25rem;">To the absolute love of my life,</p>
+                    <p style="font-style: italic; font-size: 1.25rem;">To the absolute love of my life,</p>
                     <p>Happy Birthday.</p>
                     <p>I have been trying to find the perfect words to capture what you mean to me, but sometimes I think no language is deep enough to hold the weight of my love for you. From the moment our paths crossed, I realized I hadn't just found a lover; I had found the mirror to my own soul.</p>
                     <p>We think the same. Our ideas flow together effortlessly, and our visions for life align so perfectly that I often feel you can hear my thoughts before I even speak them. We have walked through so much together—standing strong through the heavy struggles and laughing our way through the most beautiful, unforgettable moments. Every hardship we've faced has only proven that we are an unbreakable team, and every joy we've shared has cemented the fact that life is only colorful when you are by my side.</p>
@@ -348,7 +330,6 @@
             </div>
         </div>
 
-        <!-- PART 2: Celebration -->
         <div id="part2">
             <h1 class="rainbow-text">Happy Birthday Roshni! 🎉</h1>
             <div class="message-box" id="multilingual-box">
