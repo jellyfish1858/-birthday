@@ -83,7 +83,7 @@
             padding: 40px;
         }
         
-        /* NEW: Colorful Rainbow Glass Letter Box */
+        /* NEW: Romantic Love Mode Glass Letter Box */
         .love-letter {
             width: 100%;
             max-width: 650px;
@@ -94,22 +94,22 @@
             text-align: left;
             font-family: 'Georgia', serif;
             
-            /* The Animated Rainbow Background */
-            background: linear-gradient(124deg, rgba(255,36,0,0.4), rgba(232,29,29,0.4), rgba(232,183,29,0.4), rgba(227,232,29,0.4), rgba(29,232,64,0.4), rgba(29,210,232,0.4), rgba(36,29,232,0.4), rgba(183,29,232,0.4), rgba(232,29,104,0.4));
-            background-size: 1800% 1800%;
-            animation: rainbow-bg 12s ease infinite, fadeIn 2s ease-in-out;
+            /* Deep reds and soft pinks gradient */
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.4), rgba(220, 20, 60, 0.5), rgba(139, 0, 0, 0.5), rgba(255, 105, 180, 0.4));
+            background-size: 400% 400%;
+            animation: love-bg 10s ease infinite, fadeIn 2s ease-in-out;
             
             /* Glassmorphism Effect */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255,255,255,0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.2);
+            border: 2px solid rgba(255, 105, 180, 0.3); /* Soft pink border */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 30px rgba(220, 20, 60, 0.3); /* Subtle red glow */
         }
 
         /* Custom Scrollbar for the letter */
         .love-letter::-webkit-scrollbar { width: 8px; }
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .love-letter::-webkit-scrollbar-thumb { background: #fff; border-radius: 10px; }
+        .love-letter::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; } /* Red scrollbar */
 
         .letter-title {
             font-size: 2.2rem;
@@ -117,7 +117,7 @@
             margin-bottom: 20px;
             text-align: center;
             font-style: italic;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(255, 105, 180, 0.5); /* Pinkish glow on title */
             font-weight: bold;
         }
         
@@ -126,7 +126,7 @@
             line-height: 1.8;
             color: #ffffff;
             margin-bottom: 15px;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.9); /* Makes text highly readable over colors */
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
             font-weight: 500;
         }
         
@@ -142,9 +142,9 @@
         .highlight-name {
             display: block;
             font-size: 1.8rem;
-            color: #ffd700; /* Gold color for her name */
+            color: #ffb6c1; /* Light romantic pink for her name */
             margin-top: 15px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255, 215, 0, 0.6);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255, 182, 193, 0.6);
             letter-spacing: 2px;
         }
 
@@ -219,7 +219,7 @@
             z-index: 10;
         }
 
-        /* Rainbow Animated Text */
+        /* Rainbow Animated Text for Part 2 */
         .rainbow-text {
             font-size: 3.5rem;
             font-weight: 900;
@@ -273,7 +273,8 @@
             50% { background-position: 100% 50%; } 
             100% { background-position: 0% 50%; } 
         }
-        @keyframes rainbow-bg { 
+        /* New romantic background animation */
+        @keyframes love-bg { 
             0% { background-position: 0% 50%; } 
             50% { background-position: 100% 50%; } 
             100% { background-position: 0% 50%; } 
@@ -303,6 +304,7 @@
 
     <div class="container" id="main-container">
         
+        <!-- PART 1: Love Letter and Image Slideshow -->
         <div id="part1">
             <div class="slideshow-bg" id="bg-slide"></div>
             
@@ -330,6 +332,7 @@
             </div>
         </div>
 
+        <!-- PART 2: Celebration -->
         <div id="part2">
             <h1 class="rainbow-text">Happy Birthday Roshni! 🎉</h1>
             <div class="message-box" id="multilingual-box">
@@ -340,9 +343,7 @@
     </div>
 
     <script>
-        // --- IMAGE FIX ---
-        // I have changed '.jpeg' to '.jpg'. 
-        // Ensure your files in the folder are named EXACTLY: photo.jpg, photo1.jpg, photo2.jpg...
+        // Images array
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 20; i++) {
             photos.push(`photo${i}.jpg`);
@@ -423,7 +424,6 @@
             const frame = document.getElementById('photo-frame');
             const bg = document.getElementById('bg-slide');
             if(frame && bg && photos.length > 0) {
-                // If an image is broken or missing, it just skips gracefully to the next one
                 let img = new Image();
                 img.onload = function() {
                     frame.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
@@ -431,7 +431,7 @@
                     currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
                 };
                 img.onerror = function() {
-                    currentPhotoIndex = (currentPhotoIndex + 1) % photos.length; // Skip broken images
+                    currentPhotoIndex = (currentPhotoIndex + 1) % photos.length; 
                 };
                 img.src = photos[currentPhotoIndex];
             }
