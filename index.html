@@ -83,72 +83,85 @@
             padding: 40px;
         }
         
-        /* NEW: Romantic Love Mode Glass Letter Box */
+        /* NEW: Live Wallpaper Paper & Kerala Fog Background */
         .love-letter {
             width: 100%;
             max-width: 650px;
             max-height: 85vh;
             overflow-y: auto;
-            padding: 35px;
+            padding: 40px;
             border-radius: 20px;
             text-align: left;
             font-family: 'Georgia', serif;
             
-            /* Deep reds and soft pinks gradient */
-            background: linear-gradient(135deg, rgba(255, 71, 87, 0.4), rgba(220, 20, 60, 0.5), rgba(139, 0, 0, 0.5), rgba(255, 105, 180, 0.4));
-            background-size: 400% 400%;
-            animation: love-bg 10s ease infinite, fadeIn 2s ease-in-out;
+            /* MULTIPLE BACKGROUND LAYERS FOR THE "LIVE WALLPAPER" EFFECT
+               1. A moving fog gradient (Sky blues, pinks, whites)
+               2. Small scattered red hearts (SVG Pattern)
+               3. The Paper base (A warm, semi-transparent cream/white overlay)
+               4. The Kerala Nature Image (Panning slowly in the background)
+            */
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(135,206,235,0.4) 50%, rgba(255,182,193,0.3) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="80" height="80"><path fill="rgba(255,0,0,0.35)" d="M30 46.5l-.8-.7C14.7 33.3 10.5 25.5 10.5 19c0-5.5 4.5-10 10-10 3.3 0 6.3 1.6 8.1 4.1 1.8-2.5 4.8-4.1 8.1-4.1 5.5 0 10 4.5 10 10 0 6.5-4.2 14.3-18.7 26.8l-.8.7z"/></svg>'),
+                linear-gradient(rgba(255, 248, 240, 0.88), rgba(240, 248, 255, 0.92)),
+                url('kerala.jpg');
             
-            /* Glassmorphism Effect */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 105, 180, 0.3); /* Soft pink border */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 30px rgba(220, 20, 60, 0.3); /* Subtle red glow */
+            background-size: 200% 200%, 120px 120px, cover, 130% 130%;
+            animation: liveWallpaper 20s ease-in-out infinite, fadeIn 2s ease-in-out;
+            
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            border: 3px solid rgba(255, 255, 255, 0.8);
         }
 
         /* Custom Scrollbar for the letter */
         .love-letter::-webkit-scrollbar { width: 8px; }
-        .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .love-letter::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; } /* Red scrollbar */
+        .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .love-letter::-webkit-scrollbar-thumb { background: #ff758c; border-radius: 10px; }
 
+        /* Beautiful Sky Tones & Colorful Headings */
         .letter-title {
             font-size: 2.2rem;
-            color: #fff;
-            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff758c, #ff7eb3, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
             text-align: center;
             font-style: italic;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(255, 105, 180, 0.5); /* Pinkish glow on title */
             font-weight: bold;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(30, 60, 114, 0.15);
+            padding-bottom: 15px;
         }
         
         .love-letter p {
             font-size: 1.15rem;
-            line-height: 1.8;
-            color: #ffffff;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
-            font-weight: 500;
+            line-height: 1.9;
+            color: #1a2a6c; /* Deep, beautiful night-sky blue for readability over paper */
+            margin-bottom: 18px;
+            font-weight: 600;
         }
         
         .letter-signature {
-            margin-top: 30px;
+            margin-top: 40px;
             font-size: 1.3rem !important;
-            color: #fff !important;
+            color: #ff0844 !important; /* Romantic crimson red */
             text-align: center;
             font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+            border-top: 1px solid rgba(30, 60, 114, 0.15);
+            padding-top: 25px;
         }
 
         .highlight-name {
             display: block;
-            font-size: 1.8rem;
-            color: #ffb6c1; /* Light romantic pink for her name */
+            font-size: 2rem;
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-top: 15px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255, 182, 193, 0.6);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
 
-        /* Right Side: Slideshow */
+        /* Right Side: Blurred Slideshow */
         .image-column {
             flex: 1;
             height: 100%;
@@ -161,13 +174,16 @@
             width: 100%;
             max-width: 400px;
             aspect-ratio: 3/4;
-            border: 8px solid white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
             background-size: cover;
             background-position: center;
             transition: background-image 1.5s ease-in-out;
             animation: fadeIn 2s ease-in-out;
+            
+            /* ADDED BLUR EFFECT */
+            filter: blur(6px); 
         }
 
         /* Responsive Mobile Layout */
@@ -180,8 +196,8 @@
                 padding: 20px 20px 0 20px;
             }
             .photo-frame {
-                max-width: 200px;
-                border-width: 5px;
+                max-width: 220px;
+                border-width: 3px;
             }
             .text-column {
                 flex: 0.6;
@@ -189,16 +205,16 @@
             }
             .love-letter {
                 max-height: 100%;
-                padding: 20px;
+                padding: 25px 20px;
             }
             .letter-title {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
             .love-letter p {
                 font-size: 1rem;
             }
             .highlight-name {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
         }
 
@@ -273,11 +289,11 @@
             50% { background-position: 100% 50%; } 
             100% { background-position: 0% 50%; } 
         }
-        /* New romantic background animation */
-        @keyframes love-bg { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
+        /* Live Wallpaper Animation */
+        @keyframes liveWallpaper { 
+            0% { background-position: 0% 0%, 0px 0px, center, 0% 50%; } 
+            50% { background-position: 100% 100%, 60px 60px, center, 100% 50%; } 
+            100% { background-position: 0% 0%, 120px 120px, center, 0% 50%; } 
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -311,7 +327,7 @@
             <div class="text-column">
                 <div class="love-letter">
                     <h1 class="letter-title">To My Soulmate, On Your Birthday</h1>
-                    <p style="font-weight: bold; font-style: italic; font-size: 1.3rem;">To the absolute love of my life,</p>
+                    <p style="font-weight: 800; font-style: italic; font-size: 1.25rem;">To the absolute love of my life,</p>
                     <p>Happy Birthday.</p>
                     <p>I have been trying to find the perfect words to capture what you mean to me, but sometimes I think no language is deep enough to hold the weight of my love for you. From the moment our paths crossed, I realized I hadn't just found a lover; I had found the mirror to my own soul.</p>
                     <p>We think the same. Our ideas flow together effortlessly, and our visions for life align so perfectly that I often feel you can hear my thoughts before I even speak them. We have walked through so much together—standing strong through the heavy struggles and laughing our way through the most beautiful, unforgettable moments. Every hardship we've faced has only proven that we are an unbreakable team, and every joy we've shared has cemented the fact that life is only colorful when you are by my side.</p>
@@ -343,7 +359,6 @@
     </div>
 
     <script>
-        // Images array
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 20; i++) {
             photos.push(`photo${i}.jpg`);
@@ -464,8 +479,8 @@
                 }
 
                 // --- TIMER ---
-                // Transitioning to Part 2 (Currently set to 5 seconds for testing)
-                // Change 5000 to 257000 when ready!
+                // Set to 5000 (5 seconds) for testing right now. 
+                // CHANGE TO 257000 BEFORE YOU SEND IT!
                 setTimeout(() => {
                     document.getElementById('part1').style.opacity = '0';
                     const part2 = document.getElementById('part2');
