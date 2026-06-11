@@ -54,14 +54,12 @@
             display: none;
         }
 
-        /* Part 1: Emotional Message & Slideshow */
+        /* Part 1: Split Screen Layout */
         #part1 {
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            flex-direction: row;
             position: relative;
             transition: opacity 2s ease-in-out;
         }
@@ -71,31 +69,110 @@
             z-index: -1;
             background-size: cover;
             background-position: center;
-            filter: blur(8px) brightness(35%);
+            filter: blur(12px) brightness(30%);
             transition: background-image 1.5s ease-in-out;
         }
+
+        /* Left Side: Love Letter */
+        .text-column {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        .love-letter {
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            text-align: left;
+            font-family: 'Georgia', serif;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+        /* Custom Scrollbar for the letter */
+        .love-letter::-webkit-scrollbar { width: 6px; }
+        .love-letter::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .love-letter::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
+
+        .letter-title {
+            font-size: 2rem;
+            color: #ff4757;
+            margin-bottom: 20px;
+            text-align: center;
+            font-style: italic;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        .love-letter p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        .letter-signature {
+            margin-top: 30px;
+            font-size: 1.3rem !important;
+            color: #ff4757 !important;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Right Side: Slideshow */
+        .image-column {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
         .photo-frame {
-            width: 280px;
-            height: 380px;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
             border: 8px solid white;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
             background-size: cover;
             background-position: center;
             transition: background-image 1.5s ease-in-out;
-            margin-bottom: 25px;
+            animation: fadeIn 2s ease-in-out;
         }
-        .message-box {
-            max-width: 600px;
-            width: 90%;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.75);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 1.2rem;
-            line-height: 1.6;
-            animation: fadeIn 1.5s ease-in-out;
+
+        /* Responsive Mobile Layout */
+        @media (max-width: 768px) {
+            #part1 {
+                flex-direction: column;
+            }
+            .image-column {
+                flex: 0.4;
+                padding: 20px 20px 0 20px;
+            }
+            .photo-frame {
+                max-width: 200px;
+                border-width: 5px;
+            }
+            .text-column {
+                flex: 0.6;
+                padding: 15px;
+            }
+            .love-letter {
+                max-height: 100%;
+                padding: 20px;
+            }
+            .letter-title {
+                font-size: 1.5rem;
+            }
+            .love-letter p {
+                font-size: 1rem;
+            }
         }
 
         /* Part 2: Kerala Background Celebration */
@@ -152,10 +229,7 @@
         /* Fireworks Canvas */
         #fireworks-canvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 20;
             pointer-events: none;
             display: none;
@@ -180,10 +254,12 @@
 </head>
 <body>
 
+    <!-- First Song -->
     <audio id="bg-music" loop>
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Second Song -->
     <audio id="song2-audio">
         <source src="song2.mp3" type="audio/mpeg">
     </audio>
@@ -197,17 +273,31 @@
 
     <div class="container" id="main-container">
         
+        <!-- PART 1: Love Letter and Image Slideshow -->
         <div id="part1">
             <div class="slideshow-bg" id="bg-slide"></div>
-            <div class="photo-frame" id="photo-frame"></div>
-            <div class="message-box">
-                <p style="font-weight: bold; color: #ff4757;">✨ Happy Birthday, Roshni ✨</p>
-                <p style="font-size: 1.05rem; margin-top: 12px; font-style: italic; color: #e0e0e0;">
-                    "Every day with you feels like a blessing, but today is extra special. Thank you for bringing so much color, joy, and warmth into the world. May this year ahead bring you endless laughter and all the happiness you truly deserve..."
-                </p>
+            
+            <div class="text-column">
+                <div class="love-letter">
+                    <h1 class="letter-title">To My Soulmate, On Your Birthday</h1>
+                    <p style="font-weight: bold; font-style: italic;">To the absolute love of my life,</p>
+                    <p>Happy Birthday.</p>
+                    <p>I have been trying to find the perfect words to capture what you mean to me, but sometimes I think no language is deep enough to hold the weight of my love for you. From the moment our paths crossed, I realized I hadn't just found a lover; I had found the mirror to my own soul.</p>
+                    <p>We think the same. Our ideas flow together effortlessly, and our visions for life align so perfectly that I often feel you can hear my thoughts before I even speak them. We have walked through so much together—standing strong through the heavy struggles and laughing our way through the most beautiful, unforgettable moments. Every hardship we've faced has only proven that we are an unbreakable team, and every joy we've shared has cemented the fact that life is only colorful when you are by my side.</p>
+                    <p>My mind often drifts back to our temple trips. There is a profound peace in standing next to you in those sacred spaces, taking in the quiet serenity, and knowing that out of everything in this universe, we were guided to each other. Those are the moments I treasure most—not just because of where we were, but because of the absolute clarity I felt knowing I was standing next to my forever.</p>
+                    <p>You completely mesmerize me. Your smile is the light of my entire world, and the sheer warmth of it has the power to erase any worry in my mind. I am captivated by every little thing you do—the way you move, the gentleness of your actions, and the sound of your voice, which is the only comfort I will ever need. I could spend a thousand lifetimes just watching you be you, and it would never be enough.</p>
+                    <p>Right now, I have the absolute privilege of calling you my lover. But my heart aches for something more, something deeper, and something permanent. I want to spend the rest of my days making you as happy as you make me. I want a lifetime of our shared thoughts, a lifetime of holding your hand in those temples, and a lifetime of waking up to the woman who owns my soul.</p>
+                    <p>I don't just want you in my life; I want you to be my life. I want you to be my wife.</p>
+                    <p class="letter-signature">I love you infinitely, and I always will.<br>Let's make this beautiful bond forever.</p>
+                </div>
+            </div>
+
+            <div class="image-column">
+                <div class="photo-frame" id="photo-frame"></div>
             </div>
         </div>
 
+        <!-- PART 2: Celebration -->
         <div id="part2">
             <h1 class="rainbow-text">Happy Birthday Roshni! 🎉</h1>
             <div class="message-box" id="multilingual-box">
@@ -218,7 +308,12 @@
     </div>
 
     <script>
-        const photos = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
+        // Generating the array of images: photo.jpeg, photo1.jpeg, photo2.jpeg ... photo20.jpeg
+        const photos = ['photo.jpeg'];
+        for (let i = 1; i <= 20; i++) {
+            photos.push(`photo${i}.jpeg`);
+        }
+        
         let currentPhotoIndex = 0;
 
         const syncedWishes = [
@@ -302,40 +397,35 @@
             }
         }
 
-        // --- THE BULLETPROOF FIX ---
         function startCelebration() {
             try {
-                // 1. Instantly hide the welcome screen, regardless of audio loading
                 const welcome = document.getElementById('welcome-screen');
                 welcome.style.opacity = '0';
-                welcome.style.pointerEvents = 'none'; // Prevents clicking the button twice
+                welcome.style.pointerEvents = 'none'; 
                 setTimeout(() => { welcome.style.display = 'none'; }, 1000);
 
-                // 2. Show the main container immediately
                 document.getElementById('main-container').style.display = 'block';
 
-                // 3. Start the first song safely
                 const music1 = document.getElementById('bg-music');
                 if (music1) {
                     music1.play().catch(err => console.log("Audio 1 blocked by browser:", err));
                 }
 
-                // 4. Start the slideshow
+                // Initial image load and interval setup (changes every 3.5 seconds)
                 changePhotos();
                 setInterval(changePhotos, 3500);
 
-                // 5. Safely wake up the second song with a "mute trick" for strict browsers
                 if (song2Element) {
-                    song2Element.muted = true; // Mute so we don't hear a blip
+                    song2Element.muted = true; 
                     song2Element.play().then(() => {
                         song2Element.pause();
-                        song2Element.muted = false; // Unmute for later
+                        song2Element.muted = false; 
                         song2Element.currentTime = 0;
                     }).catch(e => console.log("Wake up trick blocked:", e));
                 }
 
-                // 6. Testing Timer (Set to 5 seconds right now)
-                // CHANGE THIS BACK TO 257000 BEFORE SENDING IT
+                // --- 4 Minutes 17 Seconds Timer ---
+                // Transitioning to Part 2 after 257000 ms
                 setTimeout(() => {
                     document.getElementById('part1').style.opacity = '0';
                     const part2 = document.getElementById('part2');
@@ -350,7 +440,7 @@
                         song2Element.play().catch(err => console.log("Song 2 play error:", err));
                     }
                     
-                }, 257000); // <-- Change 5000 back to 257000!
+                }, 257000); 
 
             } catch (error) {
                 console.error("Critical Error:", error);
