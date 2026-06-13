@@ -18,7 +18,7 @@
             text-align: center;
         }
 
-        /* Welcome Button Screen */
+        /* Welcome Screen */
         #welcome-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -28,22 +28,43 @@
             justify-content: center;
             align-items: center;
             z-index: 999;
-            transition: opacity 1s ease, transform 1s ease;
+            transition: opacity 1s ease;
         }
-        .btn-open {
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 50px;
+        #welcome-text {
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* NEW: 💌 Envelope Button Animations */
+        .envelope-btn {
+            font-size: 5.5rem;
             cursor: pointer;
-            box-shadow: 0 0 20px #ff4757;
             animation: pulse 2s infinite;
-            transition: transform 0.2s ease;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .btn-open:active {
-            transform: scale(0.95);
+        .envelope-btn:active {
+            transform: scale(0.9);
+        }
+        /* The class added when clicked to trigger the opening animation */
+        .envelope-btn.open-anim {
+            transform: scale(4) translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            animation: none; /* Stops the pulsing so it can zoom */
+        }
+
+        /* NEW: Firecracker Sparks */
+        .spark {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
         }
 
         /* Main Container */
@@ -64,7 +85,6 @@
             transition: opacity 2s ease-in-out;
         }
         
-        /* Blurred Background Behind the Photo */
         .slideshow-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -85,7 +105,6 @@
             padding: 40px;
         }
         
-        /* UPDATED: Custom Uploaded Background Image */
         .love-letter {
             width: 100%;
             max-width: 650px;
@@ -96,21 +115,18 @@
             text-align: left;
             font-family: 'Georgia', serif;
             
-            /* Uses your uploaded image */
             background: url('LOVELETTER BACKGROUND.png') center/cover no-repeat;
-            background-attachment: local; /* Makes the image scroll smoothly with the text */
+            background-attachment: local; 
             
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             border: 3px solid rgba(255, 255, 255, 0.6);
             animation: fadeIn 2s ease-in-out;
         }
 
-        /* Custom Scrollbar for the letter */
         .love-letter::-webkit-scrollbar { width: 8px; }
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
         .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
 
-        /* Adjusted Text Styles for Readability Over the New Image */
         .letter-title {
             font-size: 2.2rem;
             color: #d61c38;
@@ -127,10 +143,9 @@
         .love-letter p {
             font-size: 1.15rem;
             line-height: 1.9;
-            color: #2b0a0a; /* Very dark crimson/brown for high contrast */
+            color: #2b0a0a; 
             margin-bottom: 18px;
-            font-weight: 800; /* Extra bold to stand out against the background details */
-            /* Strong white glow behind text to ensure it never gets lost in the image patterns */
+            font-weight: 800; 
             text-shadow: 0 0 8px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.8);
         }
         
@@ -224,7 +239,6 @@
             z-index: 10;
         }
 
-        /* Rainbow Animated Text for Part 2 */
         .rainbow-text {
             font-size: 3.5rem;
             font-weight: 900;
@@ -258,7 +272,6 @@
             opacity: 0;
         }
 
-        /* Fireworks Canvas */
         #fireworks-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -269,9 +282,9 @@
 
         /* Animations */
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px #ff4757; }
-            50% { transform: scale(1.05); box-shadow: 0 0 35px #ff4757; }
-            100% { transform: scale(1); box-shadow: 0 0 20px #ff4757; }
+            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 71, 87, 0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 35px rgba(255, 71, 87, 1)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 71, 87, 0.5)); }
         }
         @keyframes rainbow { 
             0% { background-position: 0% 50%; } 
@@ -297,8 +310,8 @@
     <canvas id="fireworks-canvas"></canvas>
 
     <div id="welcome-screen">
-        <h2 style="margin-bottom: 20px; font-weight: 300; letter-spacing: 1px;">A Special Gift for Roshni</h2>
-        <button class="btn-open" onclick="startCelebration()">Open Gift 🎁</button>
+        <h2 id="welcome-text">A Special Gift for Roshni</h2>
+        <div class="envelope-btn" id="envelope" onclick="openEnvelope(event)">💌</div>
     </div>
 
     <div class="container" id="main-container">
@@ -340,6 +353,59 @@
     </div>
 
     <script>
+        // --- NEW: Envelope Opening & Firecracker Function ---
+        function openEnvelope(e) {
+            // 1. Hide the text
+            document.getElementById('welcome-text').style.opacity = '0';
+            
+            // 2. Animate the envelope (Scale up & Fade out)
+            const env = document.getElementById('envelope');
+            env.classList.add('open-anim');
+            
+            // 3. Create the firecracker sparks exactly where clicked
+            createFirecrackers(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+            
+            // 4. Begin the celebration sequence after 900ms (letting the animation finish)
+            setTimeout(() => {
+                const welcome = document.getElementById('welcome-screen');
+                welcome.style.opacity = '0';
+                setTimeout(() => { welcome.style.display = 'none'; }, 1000);
+                startCelebration();
+            }, 900);
+        }
+
+        // --- NEW: CSS Firecracker Generator ---
+        function createFirecrackers(x, y) {
+            const colors = ['#ff4757', '#ffa500', '#fed330', '#2ed573', '#1e90ff', '#a55eea', '#ffffff'];
+            
+            for(let i = 0; i < 50; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                document.body.appendChild(spark);
+                
+                // Calculate random explosion direction and distance
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 50 + Math.random() * 250;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                // Animate the spark
+                spark.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 600 + Math.random() * 600,
+                    easing: 'cubic-bezier(0, .9, .57, 1)'
+                });
+                
+                // Cleanup HTML
+                setTimeout(() => spark.remove(), 1200);
+            }
+        }
+
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 20; i++) {
             photos.push(`photo${i}.jpg`);
@@ -435,11 +501,6 @@
 
         function startCelebration() {
             try {
-                const welcome = document.getElementById('welcome-screen');
-                welcome.style.opacity = '0';
-                welcome.style.pointerEvents = 'none'; 
-                setTimeout(() => { welcome.style.display = 'none'; }, 1000);
-
                 document.getElementById('main-container').style.display = 'block';
 
                 const music1 = document.getElementById('bg-music');
