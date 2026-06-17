@@ -191,37 +191,66 @@
             animation: fadeIn 2s ease-in-out;
         }
 
-        /* Responsive Mobile Layout */
+        /* ========================================= */
+        /* ✨ UPDATED: RESPONSIVE MOBILE LAYOUT ✨ */
+        /* ========================================= */
         @media (max-width: 768px) {
+            body {
+                /* Allow body to handle overflow nicely on mobile */
+                overflow-y: auto; 
+            }
+            .envelope-btn {
+                font-size: 4rem; /* Slightly smaller envelope */
+            }
             #part1 {
                 flex-direction: column;
+                justify-content: flex-start;
+                overflow-y: auto; /* Allows scrolling the letter if needed */
+                height: 100%;
             }
             .image-column {
-                flex: 0.4;
-                padding: 20px 20px 0 20px;
+                flex: none; /* Removes forced equal heights */
+                padding: 30px 15px 15px 15px;
+                height: auto;
             }
             .photo-frame {
-                max-width: 280px;
-                border-width: 5px;
+                width: 80%; /* Dynamic fluid width */
+                max-width: 320px;
+                margin: 0 auto;
+                border-width: 4px; /* Thinner border for smaller screens */
             }
             .text-column {
-                flex: 0.6;
-                padding: 15px;
+                flex: none;
+                padding: 10px 15px 40px 15px;
+                height: auto;
             }
             .love-letter {
-                max-height: 100%;
+                max-height: none; /* Let the text expand fully */
                 padding: 25px 20px;
+                border-width: 2px; /* Thinner box border */
             }
             .letter-title {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+                margin-bottom: 15px;
             }
             .love-letter p {
-                font-size: 1rem;
+                font-size: 1.05rem;
+                line-height: 1.7;
             }
             .highlight-name {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+            
+            /* Part 2 Text Adjustments */
+            .rainbow-text {
+                font-size: 2.2rem;
+            }
+            #multilingual-wish {
+                font-size: 1.4rem;
+                padding: 0 15px;
             }
         }
+        /* ========================================= */
 
         /* Part 2: Kerala Background Celebration with Pink Banner & Heart Balloons */
         #part2 {
