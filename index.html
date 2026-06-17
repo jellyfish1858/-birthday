@@ -10,8 +10,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
             color: #fff;
-            overflow: hidden;
-            height: 100vh;
+            overflow: hidden; /* Desktop default: no scrolling */
+            height: 100vh;    /* Desktop default: fit to screen */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,12 +49,11 @@
         .envelope-btn:active {
             transform: scale(0.9);
         }
-        /* The class added when clicked to trigger the opening animation */
         .envelope-btn.open-anim {
             transform: scale(4) translateY(-10px);
             opacity: 0;
             pointer-events: none;
-            animation: none; /* Stops the pulsing so it can zoom */
+            animation: none;
         }
 
         /* Firecracker Sparks */
@@ -115,7 +114,8 @@
             text-align: left;
             font-family: 'Georgia', serif;
             
-            background: url('LOVELETTER BACKGROUND.png') center/cover no-repeat;
+            /* ✨ UPDATED: 100% 100% forces the full background image to show without cropping */
+            background: url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
             background-attachment: local; 
             
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
@@ -192,63 +192,63 @@
         }
 
         /* ========================================= */
-        /* ✨ UPDATED: RESPONSIVE MOBILE LAYOUT ✨ */
+        /* ✨ UPDATED: TRUE MOBILE SCROLLING ✨      */
         /* ========================================= */
         @media (max-width: 768px) {
             body {
-                /* Allow body to handle overflow nicely on mobile */
-                overflow-y: auto; 
+                display: block; /* Turns off flex centering so content starts at top */
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto !important; /* Allows the entire webpage to scroll */
+                overflow-x: hidden;
             }
-            .envelope-btn {
-                font-size: 4rem; /* Slightly smaller envelope */
+            #main-container {
+                height: auto;
+                min-height: 100vh;
             }
             #part1 {
                 flex-direction: column;
-                justify-content: flex-start;
-                overflow-y: auto; /* Allows scrolling the letter if needed */
-                height: 100%;
+                height: auto;
+                min-height: 100vh;
+                display: flex;
+            }
+            .slideshow-bg {
+                position: fixed; /* Keeps the blurred background still while you scroll down */
             }
             .image-column {
-                flex: none; /* Removes forced equal heights */
-                padding: 30px 15px 15px 15px;
+                order: -1; /* Moves the photo frame to the top on mobile */
+                padding: 40px 20px 20px 20px;
                 height: auto;
             }
             .photo-frame {
-                width: 80%; /* Dynamic fluid width */
+                width: 90%;
                 max-width: 320px;
                 margin: 0 auto;
-                border-width: 4px; /* Thinner border for smaller screens */
+                border-width: 4px;
             }
             .text-column {
-                flex: none;
-                padding: 10px 15px 40px 15px;
+                padding: 10px 15px 50px 15px; /* Extra padding at bottom for easy reading */
                 height: auto;
             }
             .love-letter {
-                max-height: none; /* Let the text expand fully */
-                padding: 25px 20px;
-                border-width: 2px; /* Thinner box border */
-            }
-            .letter-title {
-                font-size: 1.5rem;
-                margin-bottom: 15px;
-            }
-            .love-letter p {
-                font-size: 1.05rem;
-                line-height: 1.7;
-            }
-            .highlight-name {
-                font-size: 1.4rem;
+                max-height: none; /* Removes the inner scrollbar */
+                overflow-y: visible; /* Let the content stretch as long as it needs */
+                padding: 30px 20px;
+                border-width: 2px;
             }
             
-            /* Part 2 Text Adjustments */
-            .rainbow-text {
-                font-size: 2.2rem;
+            /* Ensure these layers stay locked to the screen, unaffected by scrolling */
+            #part2, #welcome-screen, #fireworks-canvas {
+                position: fixed; 
+                top: 0; left: 0; width: 100%; height: 100%;
             }
-            #multilingual-wish {
-                font-size: 1.4rem;
-                padding: 0 15px;
-            }
+
+            /* Adjust text sizes for small screens */
+            .letter-title { font-size: 1.6rem; }
+            .love-letter p { font-size: 1.05rem; line-height: 1.7; }
+            .highlight-name { font-size: 1.5rem; }
+            .rainbow-text { font-size: 2.2rem; }
+            #multilingual-wish { font-size: 1.4rem; padding: 0 15px; }
         }
         /* ========================================= */
 
@@ -256,40 +256,15 @@
         #part2 {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            
-            /* UPDATED BACKGROUND LAYERS */
-            background-color: #ffb6c1; /* Fallback Pink */
+            background-color: #ffb6c1;
             background-image: 
-                /* 1. Top Layer: Dark overlay so text is readable */
                 linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                /* 2. Middle Layer: The Kerala Image */
                 url('kerala.jpg'), 
-                /* 3. Bottom Layer Pattern: repeating Heart Balloons (Inline SVG) */
                 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 80'><path fill='%23ff1493' d='M25 40 C10 40 5 25 5 15 C5 5 15 0 25 10 C35 0 45 5 45 15 C45 25 40 40 25 40 Z'/><path fill='none' stroke='%23ffffff' stroke-width='2' d='M25 40 Q30 55 20 70 T25 80'/></svg>"),
-                /* 4. Bottom Base: Lovable Pink Gradient Banner */
                 linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            
-            /* Explicitly setting the sizes for each layer */
-            background-size: 
-                100% 100%,     /* Dark overlay fills screen */
-                contain,       /* Kerala photo shows fully */
-                100px 140px,   /* Heart balloons size */
-                100% 100%;     /* Pink gradient fills screen */
-                
-            /* Positioning each layer */
-            background-position: 
-                center,        /* Dark overlay */
-                center,        /* Kerala photo */
-                center,        /* Heart balloons */
-                center;        /* Pink gradient */
-                
-            /* Ensuring only the balloons repeat */
-            background-repeat: 
-                no-repeat,     /* Dark overlay */
-                no-repeat,     /* Kerala photo */
-                repeat,        /* Heart balloons pattern covers the blank sides */
-                no-repeat;     /* Pink gradient */
-
+            background-size: 100% 100%, contain, 100px 140px, 100% 100%;
+            background-position: center, center, center, center;
+            background-repeat: no-repeat, no-repeat, repeat, no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -414,7 +389,6 @@
     </div>
 
     <script>
-        // Envelope Opening & Firecracker Function
         function openEnvelope(e) {
             document.getElementById('welcome-text').style.opacity = '0';
             
@@ -431,7 +405,6 @@
             }, 900);
         }
 
-        // CSS Firecracker Generator
         function createFirecrackers(x, y) {
             const colors = ['#ff4757', '#ffa500', '#fed330', '#2ed573', '#1e90ff', '#a55eea', '#ffffff'];
             
@@ -596,7 +569,6 @@
             }
         }
 
-        // FIREWORKS LOGIC
         function startFireworks() {
             const canvas = document.getElementById('fireworks-canvas');
             canvas.style.display = 'block';
