@@ -179,13 +179,14 @@
         }
         .photo-frame {
             width: 100%;
-            max-width: 400px;
+            max-width: 550px; /* ENLARGED: Changed from 400px to 550px */
             aspect-ratio: 3/4;
             border: 8px solid white;
             border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-            background-size: cover;
+            background-size: contain; /* SHOW FULLY: Changed 'cover' to 'contain' */
             background-position: center;
+            background-repeat: no-repeat; /* Ensure no repetition when using 'contain' */
             transition: background-image 1.5s ease-in-out;
             animation: fadeIn 2s ease-in-out;
         }
@@ -200,7 +201,7 @@
                 padding: 20px 20px 0 20px;
             }
             .photo-frame {
-                max-width: 220px;
+                max-width: 280px; /* ENLARGED MOBILE: Changed from 220px to 280px */
                 border-width: 5px;
             }
             .text-column {
@@ -226,9 +227,11 @@
         #part2 {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('kerala.jpg');
-            background-size: cover;
+            background-color: #121212; /* FILLS SPACE: Sets a base color for the bars created by 'contain' */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('kerala.jpg');
+            background-size: contain; /* SHOW FULLY: Changed 'cover' to 'contain' */
             background-position: center;
+            background-repeat: no-repeat; /* Ensure no repetition */
             display: flex;
             flex-direction: column;
             justify-content: center;
