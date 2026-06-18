@@ -10,8 +10,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
             color: #fff;
-            overflow: hidden; /* Desktop default: no scrolling */
-            height: 100vh;    /* Desktop default: fit to screen */
+            overflow: hidden; 
+            height: 100vh;    
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +22,7 @@
         #welcome-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #2c3e50, #000000);
+            background: radial-gradient(circle, #1a1a2e, #000000);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -66,6 +66,19 @@
             z-index: 1000;
         }
 
+        /* IDEA 3: Ambient Fireflies */
+        .firefly {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #ffdd88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffdd88, 0 0 20px #ffaa00;
+            pointer-events: none;
+            animation: floatUp infinite linear;
+            z-index: 0; 
+            opacity: 0;
+        }
+
         /* Main Container */
         .container {
             width: 100%;
@@ -81,7 +94,8 @@
             display: flex;
             flex-direction: row;
             position: relative;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 2.5s ease-in-out;
+            overflow: hidden;
         }
         
         .slideshow-bg {
@@ -90,7 +104,7 @@
             z-index: -1;
             background-size: cover;
             background-position: center;
-            filter: blur(12px) brightness(30%);
+            filter: blur(12px) brightness(25%);
             transition: background-image 1.5s ease-in-out;
         }
 
@@ -102,6 +116,7 @@
             justify-content: center;
             align-items: center;
             padding: 40px;
+            z-index: 2;
         }
         
         .love-letter {
@@ -113,11 +128,8 @@
             border-radius: 15px;
             text-align: left;
             font-family: 'Georgia', serif;
-            
-            /* ✨ UPDATED: 100% 100% forces the full background image to show without cropping */
             background: url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
             background-attachment: local; 
-            
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             border: 3px solid rgba(255, 255, 255, 0.6);
             animation: fadeIn 2s ease-in-out;
@@ -168,7 +180,44 @@
             text-shadow: 2px 2px 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.9);
         }
 
-        /* Right Side: The CLEAR Photo Frame */
+        /* IDEA 2: Interactive Proposal Buttons */
+        .proposal-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding-bottom: 20px;
+        }
+        
+        .btn-proposal {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-yes {
+            background-color: #d61c38;
+            color: white;
+        }
+        .btn-yes:hover {
+            background-color: #a8152b;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6);
+        }
+
+        .btn-no {
+            background-color: #333;
+            color: white;
+            position: relative; /* Setup for JS movement */
+        }
+
+        /* Right Side: Photo Frame */
         .image-column {
             flex: 1;
             height: 100%;
@@ -176,6 +225,7 @@
             justify-content: center;
             align-items: center;
             padding: 40px;
+            z-index: 2;
         }
         .photo-frame {
             width: 100%;
@@ -191,15 +241,13 @@
             animation: fadeIn 2s ease-in-out;
         }
 
-        /* ========================================= */
-        /* ✨ UPDATED: TRUE MOBILE SCROLLING ✨      */
-        /* ========================================= */
+        /* Mobile adjustments */
         @media (max-width: 768px) {
             body {
-                display: block; /* Turns off flex centering so content starts at top */
+                display: block;
                 height: auto;
                 min-height: 100vh;
-                overflow-y: auto !important; /* Allows the entire webpage to scroll */
+                overflow-y: auto !important;
                 overflow-x: hidden;
             }
             #main-container {
@@ -212,66 +260,47 @@
                 min-height: 100vh;
                 display: flex;
             }
-            .slideshow-bg {
-                position: fixed; /* Keeps the blurred background still while you scroll down */
-            }
+            .slideshow-bg { position: fixed; }
             .image-column {
-                order: -1; /* Moves the photo frame to the top on mobile */
+                order: -1;
                 padding: 40px 20px 20px 20px;
                 height: auto;
             }
             .photo-frame {
-                width: 90%;
-                max-width: 320px;
-                margin: 0 auto;
-                border-width: 4px;
+                width: 90%; max-width: 320px;
+                margin: 0 auto; border-width: 4px;
             }
             .text-column {
-                padding: 10px 15px 50px 15px; /* Extra padding at bottom for easy reading */
+                padding: 10px 15px 50px 15px;
                 height: auto;
             }
             .love-letter {
-                max-height: none; /* Removes the inner scrollbar */
-                overflow-y: visible; /* Let the content stretch as long as it needs */
-                padding: 30px 20px;
-                border-width: 2px;
+                max-height: none; overflow-y: visible;
+                padding: 30px 20px; border-width: 2px;
             }
             
-            /* Ensure these layers stay locked to the screen, unaffected by scrolling */
             #part2, #welcome-screen, #fireworks-canvas {
-                position: fixed; 
-                top: 0; left: 0; width: 100%; height: 100%;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             }
-
-            /* Adjust text sizes for small screens */
-            .letter-title { font-size: 1.6rem; }
-            .love-letter p { font-size: 1.05rem; line-height: 1.7; }
-            .highlight-name { font-size: 1.5rem; }
-            .rainbow-text { font-size: 2.2rem; }
-            #multilingual-wish { font-size: 1.4rem; padding: 0 15px; }
         }
-        /* ========================================= */
 
-        /* Part 2: Kerala Background Celebration with Pink Banner & Heart Balloons */
+        /* IDEA 4: Smoother Part 2 Visual Transition (Dark Starry Night) */
         #part2 {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #ffb6c1;
+            background-color: #0b0f19; /* Dark starry color */
             background-image: 
-                linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                url('kerala.jpg'), 
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 80'><path fill='%23ff1493' d='M25 40 C10 40 5 25 5 15 C5 5 15 0 25 10 C35 0 45 5 45 15 C45 25 40 40 25 40 Z'/><path fill='none' stroke='%23ffffff' stroke-width='2' d='M25 40 Q30 55 20 70 T25 80'/></svg>"),
-                linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            background-size: 100% 100%, contain, 100px 140px, 100% 100%;
-            background-position: center, center, center, center;
-            background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(26, 11, 46, 0.8)), /* Smoother darkening overlay */
+                url('kerala.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 3s ease-in-out; /* Slowed down for a dreamier fade */
             z-index: 10;
         }
 
@@ -331,6 +360,12 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; transform: translateY(80vh) scale(1); }
+            80% { opacity: 0.8; transform: translateY(20vh) scale(1); }
+            100% { transform: translateY(-10vh) scale(0); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -354,6 +389,8 @@
         
         <div id="part1">
             <div class="slideshow-bg" id="bg-slide"></div>
+            <!-- Container for ambient fireflies -->
+            <div id="firefly-container" style="position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: 1;"></div>
             
             <div class="text-column">
                 <div class="love-letter">
@@ -366,11 +403,19 @@
                     <p>You completely mesmerize me. Your smile is the light of my entire world, and the sheer warmth of it has the power to erase any worry in my mind. I am captivated by every little thing you do—the way you move, the gentleness of actions, and the sound of your voice, which is the only comfort I will ever need. I could spend a thousand lifetimes just watching you be you, and it would never be enough.</p>
                     <p>Right now, I have the absolute privilege of calling you my lover. But my heart aches for something more, something deeper, and something permanent. I want to spend the rest of my days making you as happy as you make me. I want a lifetime of our shared thoughts, a lifetime of holding your hand in those temples, and a lifetime of waking up to the woman who owns my soul.</p>
                     <p>I don't just want you in my life; I want you to be my life. I want you to be my wife.</p>
+                    
                     <p class="letter-signature">
                         I love you infinitely, and I always will.<br>
                         Let's make this beautiful bond forever.<br>
                         <span class="highlight-name">I LOVE YOU ROSHNISAI</span>
                     </p>
+
+                    <!-- IDEA 2: The Proposal Buttons -->
+                    <div class="proposal-container">
+                        <button class="btn-proposal btn-yes" onclick="acceptProposal()">YES</button>
+                        <button class="btn-proposal btn-no" id="btn-no">NO</button>
+                    </div>
+
                 </div>
             </div>
 
@@ -432,6 +477,62 @@
                 setTimeout(() => spark.remove(), 1200);
             }
         }
+
+        /* IDEA 3: Spawn Fireflies */
+        function spawnFireflies() {
+            const container = document.getElementById('firefly-container');
+            for(let i = 0; i < 35; i++) {
+                let fly = document.createElement('div');
+                fly.className = 'firefly';
+                fly.style.left = Math.random() * 100 + 'vw';
+                fly.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                fly.style.animationDelay = Math.random() * 8 + 's';
+                container.appendChild(fly);
+            }
+        }
+
+        /* IDEA 2: Runaway "No" Button Logic */
+        const noBtn = document.getElementById('btn-no');
+        function dodgeButton() {
+            // Keep it within the bounds of the text-column to prevent it going off screen
+            const container = document.querySelector('.love-letter');
+            const x = Math.random() * (container.clientWidth - noBtn.clientWidth - 20);
+            const y = Math.random() * (container.clientHeight - noBtn.clientHeight - 20);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+        
+        noBtn.addEventListener('mouseover', dodgeButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent accidental tap
+            dodgeButton();
+        });
+
+        /* IDEA 2 & 4: Trigger Part 2 on YES Click */
+        function acceptProposal() {
+            document.getElementById('part1').style.opacity = '0';
+            const part2 = document.getElementById('part2');
+            
+            setTimeout(() => {
+                document.getElementById('part1').style.display = 'none'; // Hide it fully after fade
+                if (part2) {
+                    part2.style.opacity = '1';
+                    part2.style.pointerEvents = 'auto';
+                }
+                
+                const music1 = document.getElementById('bg-music');
+                if (music1) music1.pause();
+                
+                const song2Element = document.getElementById('song2-audio');
+                if (song2Element) {
+                    song2Element.currentTime = 0;
+                    song2Element.play().catch(err => console.log("Song 2 play error:", err));
+                }
+            }, 2000); // Wait for the fade out
+        }
+
 
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 20; i++) {
@@ -537,31 +638,17 @@
 
                 changePhotos();
                 setInterval(changePhotos, 3500);
+                spawnFireflies(); // Trigger Idea 3 ambient effect
 
                 if (song2Element) {
                     song2Element.muted = true; 
                     song2Element.play().then(() => {
                         song2Element.pause();
                         song2Element.muted = false; 
-                        song2Element.currentTime = 0;
                     }).catch(e => console.log("Wake up trick blocked:", e));
                 }
 
-                setTimeout(() => {
-                    document.getElementById('part1').style.opacity = '0';
-                    const part2 = document.getElementById('part2');
-                    
-                    if (part2) {
-                        part2.style.opacity = '1';
-                        part2.style.pointerEvents = 'auto';
-                    }
-                    
-                    if (music1) music1.pause();
-                    if (song2Element) {
-                        song2Element.play().catch(err => console.log("Song 2 play error:", err));
-                    }
-                    
-                }, 257000); 
+                // Removed the 257000ms timeout! Now Part 2 only triggers when "YES" is clicked.
 
             } catch (error) {
                 console.error("Critical Error:", error);
