@@ -18,7 +18,7 @@
             text-align: center;
         }
 
-        /* 🎁 New Screen 1: Gift Box */
+        /* 🎁 Screen 1: Gift Box */
         #gift-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -27,7 +27,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1002; /* Highest z-index */
+            z-index: 1002;
             transition: opacity 1s ease;
         }
         .gift-box {
@@ -57,12 +57,12 @@
             100% { transform: rotate(0deg) scale(1); }
         }
 
-        /* ❤️ New Screen 2: Intro Song & Raining Hearts */
+        /* ❤️ Screen 2: Intro Song, Raining Hearts & Rapid Photo Glimpse */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: #ffb6c1; /* Pink background */
-            display: none; /* Hidden initially */
+            display: none; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -71,18 +71,29 @@
             transition: opacity 1s ease;
             overflow: hidden;
         }
+        /* NEW: Rapid Photo Montage Layer */
+        #intro-slideshow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4; /* Blends the photos with the pink background */
+            z-index: 1; /* Behind the hearts and button */
+            transition: background-image 0.1s ease-in-out;
+        }
         .heart-drop {
             position: absolute;
             color: #d61c38;
             top: -10%;
             pointer-events: none;
             animation: fallHeart linear forwards;
+            z-index: 2; /* In front of the photos */
         }
         @keyframes fallHeart {
             to { transform: translateY(115vh) rotate(360deg); }
         }
         #ready-btn {
-            display: none; /* Hidden until song ends */
+            display: none; 
             padding: 15px 40px;
             font-size: 1.5rem;
             font-weight: bold;
@@ -101,12 +112,12 @@
             100% { transform: scale(1); }
         }
 
-        /* Original Welcome Screen (Envelope) */
+        /* Screen 3: Original Envelope */
         #welcome-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, #1a1a2e, #000000);
-            display: none; /* Hidden initially now */
+            display: none; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -121,7 +132,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* 💌 Envelope Button Animations */
         .envelope-btn {
             font-size: 5.5rem;
             cursor: pointer;
@@ -140,7 +150,7 @@
             animation: none;
         }
 
-        /* Firecracker Sparks */
+        /* Firecracker Sparks & Fireflies */
         .spark {
             position: absolute;
             width: 10px;
@@ -149,8 +159,6 @@
             pointer-events: none;
             z-index: 1005;
         }
-
-        /* Ambient Fireflies */
         .firefly {
             position: absolute;
             width: 4px; height: 4px;
@@ -163,15 +171,13 @@
             opacity: 0;
         }
 
-        /* Main Container */
+        /* Main Container & Split Screen */
         .container {
             width: 100%;
             height: 100%;
             position: relative;
             display: none;
         }
-
-        /* Part 1: Split Screen Layout */
         #part1 {
             width: 100%;
             height: 100%;
@@ -181,7 +187,6 @@
             transition: opacity 2.5s ease-in-out;
             overflow: hidden;
         }
-        
         .slideshow-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -202,7 +207,6 @@
             padding: 40px;
             z-index: 2;
         }
-        
         .love-letter {
             width: 100%;
             max-width: 650px;
@@ -218,7 +222,6 @@
             border: 3px solid rgba(255, 255, 255, 0.6);
             animation: fadeIn 2s ease-in-out;
         }
-
         .love-letter::-webkit-scrollbar { width: 8px; }
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
         .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
@@ -235,7 +238,6 @@
             padding-bottom: 15px;
             text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.8);
         }
-        
         .love-letter p {
             font-size: 1.15rem;
             line-height: 1.9;
@@ -244,7 +246,6 @@
             font-weight: 800; 
             text-shadow: 0 0 8px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.8);
         }
-        
         .letter-signature {
             margin-top: 40px;
             font-size: 1.4rem !important;
@@ -254,7 +255,6 @@
             border-top: 2px solid rgba(214, 28, 56, 0.3);
             padding-top: 25px;
         }
-
         .highlight-name {
             display: block;
             font-size: 2.2rem;
@@ -264,7 +264,6 @@
             text-shadow: 2px 2px 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.9);
         }
 
-        /* Interactive Proposal Buttons */
         .proposal-container {
             margin-top: 30px;
             display: flex;
@@ -272,7 +271,6 @@
             gap: 20px;
             padding-bottom: 20px;
         }
-        
         .btn-proposal {
             padding: 12px 30px;
             font-size: 1.2rem;
@@ -284,7 +282,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             font-family: 'Segoe UI', sans-serif;
         }
-
         .btn-yes {
             background-color: #d61c38;
             color: white;
@@ -294,7 +291,6 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6);
         }
-
         .btn-no {
             background-color: #333;
             color: white;
@@ -327,42 +323,14 @@
 
         /* Mobile adjustments */
         @media (max-width: 768px) {
-            body {
-                display: block;
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto !important;
-                overflow-x: hidden;
-            }
-            #main-container {
-                height: auto;
-                min-height: 100vh;
-            }
-            #part1 {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-                display: flex;
-            }
+            body { display: block; height: auto; min-height: 100vh; overflow-y: auto !important; overflow-x: hidden; }
+            #main-container { height: auto; min-height: 100vh; }
+            #part1 { flex-direction: column; height: auto; min-height: 100vh; display: flex; }
             .slideshow-bg { position: fixed; }
-            .image-column {
-                order: -1;
-                padding: 40px 20px 20px 20px;
-                height: auto;
-            }
-            .photo-frame {
-                width: 90%; max-width: 320px;
-                margin: 0 auto; border-width: 4px;
-            }
-            .text-column {
-                padding: 10px 15px 50px 15px;
-                height: auto;
-            }
-            .love-letter {
-                max-height: none; overflow-y: visible;
-                padding: 30px 20px; border-width: 2px;
-            }
-            
+            .image-column { order: -1; padding: 40px 20px 20px 20px; height: auto; }
+            .photo-frame { width: 90%; max-width: 320px; margin: 0 auto; border-width: 4px; }
+            .text-column { padding: 10px 15px 50px 15px; height: auto; }
+            .love-letter { max-height: none; overflow-y: visible; padding: 30px 20px; border-width: 2px; }
             #part2, #welcome-screen, #fireworks-canvas, #gift-screen, #intro-screen {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             }
@@ -390,7 +358,6 @@
             transition: opacity 2s ease-in-out;
             z-index: 10;
         }
-
         .rainbow-text {
             font-size: 3.5rem;
             font-weight: 900;
@@ -403,7 +370,6 @@
             padding: 0 10px;
             z-index: 11;
         }
-
         #multilingual-box {
             width: 85%;
             max-width: 700px;
@@ -414,7 +380,6 @@
             transition: opacity 1s ease-in-out;
             z-index: 11;
         }
-
         #multilingual-wish {
             font-size: 2rem;
             font-weight: bold;
@@ -423,7 +388,6 @@
             transition: opacity 0.4s ease-in-out;
             opacity: 0;
         }
-
         #fireworks-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -438,15 +402,8 @@
             50% { transform: scale(1.1); filter: drop-shadow(0 0 35px rgba(255, 71, 87, 1)); }
             100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 71, 87, 0.5)); }
         }
-        @keyframes rainbow { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             20% { opacity: 0.8; transform: translateY(80vh) scale(1); }
@@ -477,6 +434,7 @@
     </div>
 
     <div id="intro-screen">
+        <div id="intro-slideshow"></div>
         <button id="ready-btn" onclick="showEnvelopeScreen()">Ready for a surprise?</button>
     </div>
 
@@ -532,13 +490,18 @@
     </div>
 
     <script>
+        // Define photos globally so all functions can use them
+        const photos = ['photo.jpg'];
+        for (let i = 1; i <= 20; i++) {
+            photos.push(`photo${i}.jpg`);
+        }
+
         let heartInterval;
+        let introSlideInterval;
 
         // 🎁 Handle Gift Box Opening & Confetti
         function openGift(e) {
-            // Spawn blasting papers (confetti)
             createConfetti(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
-            
             const giftScreen = document.getElementById('gift-screen');
             giftScreen.style.opacity = '0';
             
@@ -565,7 +528,7 @@
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = 50 + Math.random() * 300;
                 const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity + 200; // Gravity pull down
+                const ty = Math.sin(angle) * velocity + 200; // Gravity
                 const rot = Math.random() * 720;
 
                 conf.animate([
@@ -580,11 +543,22 @@
             }
         }
 
-        // ❤️ Handle Intro Screen (Raining Hearts & Song)
+        // ❤️ Handle Intro Screen (Raining Hearts, Song & Rapid Photo Montage)
         function startIntroSequence() {
             const introScreen = document.getElementById('intro-screen');
             introScreen.style.display = 'flex';
             setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
+
+            // Start Rapid Photo Montage (Changes every 300ms)
+            let introIdx = 0;
+            const introBg = document.getElementById('intro-slideshow');
+            if (photos.length > 0) {
+                introBg.style.backgroundImage = `url('${photos[introIdx]}')`;
+                introSlideInterval = setInterval(() => {
+                    introIdx = (introIdx + 1) % photos.length;
+                    introBg.style.backgroundImage = `url('${photos[introIdx]}')`;
+                }, 300);
+            }
 
             // Start Raining Hearts
             heartInterval = setInterval(() => {
@@ -604,10 +578,8 @@
             if(introAudio) {
                 introAudio.play().catch(e => {
                     console.log("Audio play prevented:", e);
-                    // Fallback if browser blocks audio
                     setTimeout(showReadyButton, 4000);
                 });
-                // When song ends, show the Ready button
                 introAudio.onended = showReadyButton;
             } else {
                 setTimeout(showReadyButton, 4000);
@@ -620,9 +592,11 @@
 
         // Transitions from Intro -> Original Envelope Screen
         function showEnvelopeScreen() {
-            clearInterval(heartInterval); // Stop raining hearts
+            clearInterval(heartInterval); // Stop hearts
+            clearInterval(introSlideInterval); // Stop flashing photos
+            
             const introAudio = document.getElementById('intro-audio');
-            if(introAudio) introAudio.pause(); // Just in case it's still playing
+            if(introAudio) introAudio.pause(); 
 
             const introScreen = document.getElementById('intro-screen');
             introScreen.style.opacity = '0';
@@ -635,11 +609,7 @@
             }, 1000);
         }
 
-
-        /* ========================================= */
-        /* ORIGINAL LOGIC BELOW (Slightly adjusted)  */
-        /* ========================================= */
-
+        /* Original Envelope / Firecrackers Logic */
         function openEnvelope(e) {
             document.getElementById('welcome-text').style.opacity = '0';
             
@@ -735,11 +705,6 @@
                     song2Element.play().catch(err => console.log("Song 2 play error:", err));
                 }
             }, 2000);
-        }
-
-        const photos = ['photo.jpg'];
-        for (let i = 1; i <= 20; i++) {
-            photos.push(`photo${i}.jpg`);
         }
         
         let currentPhotoIndex = 0;
