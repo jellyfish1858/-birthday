@@ -154,7 +154,7 @@
             padding: 50px;
             border-radius: 20px;
             text-align: left;
-            position: relative; 
+            /* REMOVED position: relative; so the button matches your very first code and doesn't get hidden */
             font-family: 'Playfair Display', serif;
             background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
             backdrop-filter: blur(2px);
@@ -205,7 +205,9 @@
         }
         .btn-yes { background-color: #d61c38; color: white; }
         .btn-yes:hover { background-color: #a8152b; transform: scale(1.05); box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6); }
-        .btn-no { background-color: #333; color: white; position: relative; }
+        
+        /* NO BUTTON EXACTLY AS YOUR FIRST CODE */
+        .btn-no { background-color: #333; color: white; position: relative; z-index: 1000; } 
 
         /* Right Side: Photo Frame */
         .image-column {
@@ -342,10 +344,8 @@
         }
 
         // ==========================================
-        // NEW ADVANCED RANDOM SHUFFLE LOGIC
+        // ADVANCED RANDOM SHUFFLE LOGIC
         // ==========================================
-        
-        // Function to shuffle an array perfectly (Fisher-Yates)
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -353,7 +353,6 @@
             }
         }
 
-        // Create arrays holding the indexes [0, 1, 2, ..., 25] and shuffle them
         let mainShuffledIndices = [...Array(photos.length).keys()];
         let introShuffledIndices = [...Array(photos.length).keys()];
         
@@ -362,7 +361,6 @@
 
         let currentMainShuffleIndex = 0;
         let currentIntroShuffleIndex = 0;
-
         // ==========================================
 
         let heartInterval;
@@ -377,7 +375,6 @@
                 imgDiv.className = 'intro-img-layer';
                 imgDiv.style.backgroundImage = `url('${src}')`;
                 
-                // Set the active class to the FIRST item in our newly shuffled intro deck
                 if (index === introShuffledIndices[0]) {
                     imgDiv.classList.add('active');
                 }
@@ -433,20 +430,16 @@
 
             if (introLayerElements.length > 0) {
                 introSlideInterval = setInterval(() => {
-                    // Remove active from the currently displayed photo
                     let currentIdx = introShuffledIndices[currentIntroShuffleIndex];
                     introLayerElements[currentIdx].classList.remove('active');
                     
-                    // Move to next card in the deck
                     currentIntroShuffleIndex++;
                     
-                    // If deck is empty, shuffle again!
                     if (currentIntroShuffleIndex >= introShuffledIndices.length) {
                         shuffleArray(introShuffledIndices);
                         currentIntroShuffleIndex = 0;
                     }
                     
-                    // Add active to the new photo
                     let nextIdx = introShuffledIndices[currentIntroShuffleIndex];
                     introLayerElements[nextIdx].classList.add('active');
                 }, 100);
@@ -529,7 +522,7 @@
             }
         }
 
-        /* EXACT Original "No" Button Logic */
+        /* EXACT Original "No" Button Logic (Restored per your request) */
         const noBtn = document.getElementById('btn-no');
         function dodgeButton() {
             const container = document.querySelector('.love-letter');
@@ -629,19 +622,16 @@
             }
         });
 
-        // 🖼️ UPDATED PHOTO CHANGER WITH RANDOM DECK LOGIC
         function changePhotos() {
             const frame = document.getElementById('photo-frame');
             const bg = document.getElementById('bg-slide');
             if(frame && bg && photos.length > 0) {
                 
-                // If we've shown all photos in this round, reshuffle the deck!
                 if (currentMainShuffleIndex >= mainShuffledIndices.length) {
                     shuffleArray(mainShuffledIndices);
                     currentMainShuffleIndex = 0;
                 }
                 
-                // Pick the next photo from our shuffled deck
                 let actualPhotoIndex = mainShuffledIndices[currentMainShuffleIndex];
 
                 let img = new Image();
@@ -651,7 +641,7 @@
                     currentMainShuffleIndex++;
                 };
                 img.onerror = function() { 
-                    currentMainShuffleIndex++; // Skip gracefully if image doesn't exist
+                    currentMainShuffleIndex++; 
                 };
                 img.src = photos[actualPhotoIndex];
             }
