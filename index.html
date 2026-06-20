@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Roshni!</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -146,7 +146,7 @@
             flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; padding: 40px; z-index: 2;
         }
         
-        /* UPDATED: Premium Aesthetics for the Love Letter */
+        /* UPDATED: Background Image is much more visible now */
         .love-letter {
             width: 100%;
             max-width: 650px;
@@ -156,9 +156,9 @@
             border-radius: 20px;
             text-align: left;
             font-family: 'Playfair Display', serif;
-            background: rgba(255, 248, 240, 0.85) url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
-            background-blend-mode: overlay;
-            backdrop-filter: blur(10px);
+            /* Linear gradient acts as a light, transparent overlay so the text is readable, but the image shines through clearly */
+            background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
+            backdrop-filter: blur(2px); /* Very slight blur to keep the background image sharp */
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             border: 2px solid rgba(214, 28, 56, 0.3);
             animation: fadeIn 2s ease-in-out;
@@ -167,7 +167,6 @@
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
 
-        /* UPDATED: Elegant Calligraphy Title */
         .letter-title {
             font-family: 'Great Vibes', cursive;
             font-size: 3.8rem;
@@ -177,16 +176,17 @@
             font-weight: normal;
             border-bottom: 1px solid rgba(214, 28, 56, 0.3);
             padding-bottom: 15px;
-            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
         }
         
-        /* UPDATED: Clean, readable text */
+        /* UPDATED: Text is slightly thicker with a subtle glow so it reads perfectly over the background image */
         .love-letter p {
             font-size: 1.15rem;
             line-height: 1.8;
-            color: #2b0a0a; 
+            color: #1a0505; 
             margin-bottom: 20px;
-            font-weight: 400; 
+            font-weight: 600; /* Thicker text for readability */
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9); /* Subtle white glow behind text */
         }
 
         .letter-signature {
@@ -490,7 +490,7 @@
             }
         }
 
-        /* UPDATED: Runaway "No" Button Logic (Proximity Detection for Trackpads) */
+        /* UPDATED: Original "No" Button Logic (Hover & Touch only) */
         const noBtn = document.getElementById('btn-no');
         function dodgeButton() {
             const container = document.querySelector('.love-letter');
@@ -502,23 +502,6 @@
             noBtn.style.top = `${y}px`;
         }
         
-        // Listen to mouse movement near the button instead of waiting for a hover
-        document.addEventListener('mousemove', (e) => {
-            const noBtnRect = noBtn.getBoundingClientRect();
-            // Find the center of the NO button
-            const btnCenterX = noBtnRect.left + noBtnRect.width / 2;
-            const btnCenterY = noBtnRect.top + noBtnRect.height / 2;
-            
-            // Calculate distance between mouse cursor and button center
-            const distance = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY);
-            
-            // If the cursor gets within 90 pixels, move the button immediately
-            if (distance < 90) {
-                dodgeButton();
-            }
-        });
-
-        // Keep touch and mouseover as fallbacks
         noBtn.addEventListener('mouseover', dodgeButton);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); });
 
