@@ -18,16 +18,100 @@
             text-align: center;
         }
 
-        /* Welcome Screen */
-        #welcome-screen {
+        /* 🎁 New Screen 1: Gift Box */
+        #gift-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #1a1a2e, #000000);
+            background: radial-gradient(circle, #2b0a3d, #000000);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            z-index: 1002; /* Highest z-index */
+            transition: opacity 1s ease;
+        }
+        .gift-box {
+            font-size: 7rem;
+            cursor: pointer;
+            animation: shakeGift 1.5s infinite;
+            transition: transform 0.3s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gift-box:active {
+            transform: scale(0.9);
+        }
+        .gift-text {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+        @keyframes shakeGift {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(10deg) scale(1.05); }
+            20% { transform: rotate(-10deg) scale(1.05); }
+            30% { transform: rotate(10deg) scale(1.05); }
+            40% { transform: rotate(-10deg) scale(1.05); }
+            50% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        /* ❤️ New Screen 2: Intro Song & Raining Hearts */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffb6c1; /* Pink background */
+            display: none; /* Hidden initially */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 1s ease;
+            overflow: hidden;
+        }
+        .heart-drop {
+            position: absolute;
+            color: #d61c38;
+            top: -10%;
+            pointer-events: none;
+            animation: fallHeart linear forwards;
+        }
+        @keyframes fallHeart {
+            to { transform: translateY(115vh) rotate(360deg); }
+        }
+        #ready-btn {
+            display: none; /* Hidden until song ends */
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: #d61c38;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(214, 28, 56, 0.5);
+            animation: fadeIn 1s ease, pulseBtn 2s infinite;
+        }
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Original Welcome Screen (Envelope) */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #1a1a2e, #000000);
+            display: none; /* Hidden initially now */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             z-index: 999;
+            opacity: 0;
             transition: opacity 1s ease;
         }
         #welcome-text {
@@ -63,7 +147,7 @@
             height: 10px;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 1005;
         }
 
         /* Ambient Fireflies */
@@ -279,14 +363,12 @@
                 padding: 30px 20px; border-width: 2px;
             }
             
-            #part2, #welcome-screen, #fireworks-canvas {
+            #part2, #welcome-screen, #fireworks-canvas, #gift-screen, #intro-screen {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             }
         }
 
-        /* ========================================= */
-        /* RESTORED ORIGINAL PART 2 BACKGROUND       */
-        /* ========================================= */
+        /* Part 2: Multilingual Wishes */
         #part2 {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -375,6 +457,10 @@
 </head>
 <body>
 
+    <audio id="intro-audio">
+        <source src="intro-song.mp3" type="audio/mpeg">
+    </audio>
+
     <audio id="bg-music" loop>
         <source src="song.mp3" type="audio/mpeg">
     </audio>
@@ -384,6 +470,15 @@
     </audio>
 
     <canvas id="fireworks-canvas"></canvas>
+
+    <div id="gift-screen">
+        <div class="gift-box" onclick="openGift(event)">🎁</div>
+        <p class="gift-text">Tap to open!</p>
+    </div>
+
+    <div id="intro-screen">
+        <button id="ready-btn" onclick="showEnvelopeScreen()">Ready for a surprise?</button>
+    </div>
 
     <div id="welcome-screen">
         <h2 id="welcome-text">A Special Gift for Roshni</h2>
@@ -437,6 +532,114 @@
     </div>
 
     <script>
+        let heartInterval;
+
+        // 🎁 Handle Gift Box Opening & Confetti
+        function openGift(e) {
+            // Spawn blasting papers (confetti)
+            createConfetti(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+            
+            const giftScreen = document.getElementById('gift-screen');
+            giftScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                giftScreen.style.display = 'none';
+                startIntroSequence();
+            }, 800);
+        }
+
+        // Blasting Papers Physics
+        function createConfetti(x, y) {
+            const colors = ['#ff4757', '#ffa500', '#fed330', '#2ed573', '#1e90ff', '#a55eea', '#ffffff'];
+            for(let i = 0; i < 80; i++) {
+                const conf = document.createElement('div');
+                conf.style.position = 'absolute';
+                conf.style.width = (Math.random() * 8 + 4) + 'px'; 
+                conf.style.height = (Math.random() * 15 + 8) + 'px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.left = x + 'px'; 
+                conf.style.top = y + 'px';
+                conf.style.zIndex = '1005';
+                document.body.appendChild(conf);
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 50 + Math.random() * 300;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity + 200; // Gravity pull down
+                const rot = Math.random() * 720;
+
+                conf.animate([
+                    { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) rotate(${rot}deg)`, opacity: 0 }
+                ], {
+                    duration: 1000 + Math.random() * 800,
+                    easing: 'cubic-bezier(.25,.8,.25,1)'
+                });
+
+                setTimeout(() => conf.remove(), 1800);
+            }
+        }
+
+        // ❤️ Handle Intro Screen (Raining Hearts & Song)
+        function startIntroSequence() {
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.style.display = 'flex';
+            setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
+
+            // Start Raining Hearts
+            heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'heart-drop';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                introScreen.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 5000);
+            }, 150);
+
+            // Play Intro Audio
+            const introAudio = document.getElementById('intro-audio');
+            if(introAudio) {
+                introAudio.play().catch(e => {
+                    console.log("Audio play prevented:", e);
+                    // Fallback if browser blocks audio
+                    setTimeout(showReadyButton, 4000);
+                });
+                // When song ends, show the Ready button
+                introAudio.onended = showReadyButton;
+            } else {
+                setTimeout(showReadyButton, 4000);
+            }
+        }
+
+        function showReadyButton() {
+            document.getElementById('ready-btn').style.display = 'block';
+        }
+
+        // Transitions from Intro -> Original Envelope Screen
+        function showEnvelopeScreen() {
+            clearInterval(heartInterval); // Stop raining hearts
+            const introAudio = document.getElementById('intro-audio');
+            if(introAudio) introAudio.pause(); // Just in case it's still playing
+
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                const welcomeScreen = document.getElementById('welcome-screen');
+                welcomeScreen.style.display = 'flex';
+                setTimeout(() => { welcomeScreen.style.opacity = '1'; }, 100);
+            }, 1000);
+        }
+
+
+        /* ========================================= */
+        /* ORIGINAL LOGIC BELOW (Slightly adjusted)  */
+        /* ========================================= */
+
         function openEnvelope(e) {
             document.getElementById('welcome-text').style.opacity = '0';
             
@@ -481,7 +684,6 @@
             }
         }
 
-        /* Spawn Fireflies */
         function spawnFireflies() {
             const container = document.getElementById('firefly-container');
             for(let i = 0; i < 35; i++) {
