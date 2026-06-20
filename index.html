@@ -146,7 +146,6 @@
             flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; padding: 40px; z-index: 2;
         }
         
-        /* UPDATED: Background Image is much more visible now */
         .love-letter {
             width: 100%;
             max-width: 650px;
@@ -155,10 +154,10 @@
             padding: 50px;
             border-radius: 20px;
             text-align: left;
+            position: relative; /* CRUCIAL FIX: Keeps the runaway button inside the letter */
             font-family: 'Playfair Display', serif;
-            /* Linear gradient acts as a light, transparent overlay so the text is readable, but the image shines through clearly */
             background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
-            backdrop-filter: blur(2px); /* Very slight blur to keep the background image sharp */
+            backdrop-filter: blur(2px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             border: 2px solid rgba(214, 28, 56, 0.3);
             animation: fadeIn 2s ease-in-out;
@@ -179,14 +178,13 @@
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
         }
         
-        /* UPDATED: Text is slightly thicker with a subtle glow so it reads perfectly over the background image */
         .love-letter p {
             font-size: 1.15rem;
             line-height: 1.8;
             color: #1a0505; 
             margin-bottom: 20px;
-            font-weight: 600; /* Thicker text for readability */
-            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9); /* Subtle white glow behind text */
+            font-weight: 600; 
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9);
         }
 
         .letter-signature {
@@ -199,7 +197,7 @@
         }
 
         .proposal-container {
-            margin-top: 30px; display: flex; justify-content: center; gap: 20px; padding-bottom: 20px; position: relative;
+            margin-top: 30px; display: flex; justify-content: center; gap: 20px; padding-bottom: 20px;
         }
         .btn-proposal {
             padding: 12px 35px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 30px;
@@ -207,7 +205,7 @@
         }
         .btn-yes { background-color: #d61c38; color: white; }
         .btn-yes:hover { background-color: #a8152b; transform: scale(1.05); box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6); }
-        .btn-no { background-color: #333; color: white; position: relative; z-index: 10; }
+        .btn-no { background-color: #333; color: white; position: relative; }
 
         /* Right Side: Photo Frame */
         .image-column {
@@ -490,7 +488,7 @@
             }
         }
 
-        /* UPDATED: Original "No" Button Logic (Hover & Touch only) */
+        /* EXACT Original "No" Button Logic */
         const noBtn = document.getElementById('btn-no');
         function dodgeButton() {
             const container = document.querySelector('.love-letter');
@@ -503,7 +501,10 @@
         }
         
         noBtn.addEventListener('mouseover', dodgeButton);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); });
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            dodgeButton();
+        });
 
         /* Trigger Part 2 on YES Click */
         function acceptProposal() {
