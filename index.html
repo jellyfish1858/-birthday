@@ -61,7 +61,7 @@
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #ffb6c1; /* Pink background */
+            background-color: #ffb6c1; 
             display: none; 
             flex-direction: column;
             justify-content: center;
@@ -71,22 +71,32 @@
             transition: opacity 1s ease;
             overflow: hidden;
         }
-        /* Rapid Photo Montage Layer (Transition removed for instant cuts) */
+        
+        /* NEW PRELOADER CSS FOR SMOOTH INTRO CUTS */
         #intro-slideshow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; 
+        }
+        .intro-img-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
             background-position: center;
-            opacity: 0.4; /* Blends the photos with the pink background */
-            z-index: 1; /* Behind the hearts and button */
+            opacity: 0; /* Hidden by default */
+            /* No transition creates the instant, hard video cut */
         }
+        .intro-img-layer.active {
+            opacity: 0.4; /* Blends perfectly with pink background */
+        }
+
         .heart-drop {
             position: absolute;
             color: #d61c38;
             top: -10%;
             pointer-events: none;
             animation: fallHeart linear forwards;
-            z-index: 2; /* In front of the photos */
+            z-index: 2; 
         }
         @keyframes fallHeart {
             to { transform: translateY(115vh) rotate(360deg); }
@@ -489,8 +499,7 @@
     </div>
 
     <script>
-        // Define photos globally so all functions can use them
-        // UPDATED: Now loops up to 25 to accommodate all 26 photos.
+        // Define all 26 photos globally
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 25; i++) {
             photos.push(`photo${i}.jpg`);
@@ -498,6 +507,25 @@
 
         let heartInterval;
         let introSlideInterval;
+        let introLayerElements = []; // Store DOM elements for smooth toggling
+
+        // Preload photos into DOM on page load for instant cutting later
+        window.addEventListener('DOMContentLoaded', () => {
+            const slideshowContainer = document.getElementById('intro-slideshow');
+            photos.forEach((src, index) => {
+                let imgDiv = document.createElement('div');
+                imgDiv.className = 'intro-img-layer';
+                imgDiv.style.backgroundImage = `url('${src}')`;
+                
+                // Keep the first image visible initially
+                if (index === 0) {
+                    imgDiv.classList.add('active');
+                }
+                
+                slideshowContainer.appendChild(imgDiv);
+                introLayerElements.push(imgDiv);
+            });
+        });
 
         // 🎁 Handle Gift Box Opening & Confetti
         function openGift(e) {
@@ -528,7 +556,7 @@
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = 50 + Math.random() * 300;
                 const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity + 200; // Gravity
+                const ty = Math.sin(angle) * velocity + 200; 
                 const rot = Math.random() * 720;
 
                 conf.animate([
@@ -543,20 +571,24 @@
             }
         }
 
-        // ❤️ Handle Intro Screen (Raining Hearts, Song & Rapid Photo Montage)
+        // ❤️ Handle Intro Screen 
         function startIntroSequence() {
             const introScreen = document.getElementById('intro-screen');
             introScreen.style.display = 'flex';
             setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
 
-            // Start Rapid Photo Montage (Changes every 100ms)
+            // Start pre-loaded Smooth Rapid Montage
             let introIdx = 0;
-            const introBg = document.getElementById('intro-slideshow');
-            if (photos.length > 0) {
-                introBg.style.backgroundImage = `url('${photos[introIdx]}')`;
+            if (introLayerElements.length > 0) {
                 introSlideInterval = setInterval(() => {
-                    introIdx = (introIdx + 1) % photos.length;
-                    introBg.style.backgroundImage = `url('${photos[introIdx]}')`;
+                    // Turn off current image
+                    introLayerElements[introIdx].classList.remove('active');
+                    
+                    // Move to next image
+                    introIdx = (introIdx + 1) % introLayerElements.length;
+                    
+                    // Turn on next image
+                    introLayerElements[introIdx].classList.add('active');
                 }, 100);
             }
 
@@ -592,8 +624,8 @@
 
         // Transitions from Intro -> Original Envelope Screen
         function showEnvelopeScreen() {
-            clearInterval(heartInterval); // Stop hearts
-            clearInterval(introSlideInterval); // Stop flashing photos
+            clearInterval(heartInterval); 
+            clearInterval(introSlideInterval); 
             
             const introAudio = document.getElementById('intro-audio');
             if(introAudio) introAudio.pause(); 
