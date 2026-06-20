@@ -154,7 +154,7 @@
             padding: 50px;
             border-radius: 20px;
             text-align: left;
-            position: relative; /* CRUCIAL FIX: Keeps the runaway button inside the letter */
+            position: relative; 
             font-family: 'Playfair Display', serif;
             background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
             backdrop-filter: blur(2px);
@@ -341,6 +341,30 @@
             photos.push(`photo${i}.jpg`);
         }
 
+        // ==========================================
+        // NEW ADVANCED RANDOM SHUFFLE LOGIC
+        // ==========================================
+        
+        // Function to shuffle an array perfectly (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Create arrays holding the indexes [0, 1, 2, ..., 25] and shuffle them
+        let mainShuffledIndices = [...Array(photos.length).keys()];
+        let introShuffledIndices = [...Array(photos.length).keys()];
+        
+        shuffleArray(mainShuffledIndices);
+        shuffleArray(introShuffledIndices);
+
+        let currentMainShuffleIndex = 0;
+        let currentIntroShuffleIndex = 0;
+
+        // ==========================================
+
         let heartInterval;
         let introSlideInterval;
         let introLayerElements = []; 
@@ -352,7 +376,12 @@
                 let imgDiv = document.createElement('div');
                 imgDiv.className = 'intro-img-layer';
                 imgDiv.style.backgroundImage = `url('${src}')`;
-                if (index === 0) imgDiv.classList.add('active');
+                
+                // Set the active class to the FIRST item in our newly shuffled intro deck
+                if (index === introShuffledIndices[0]) {
+                    imgDiv.classList.add('active');
+                }
+                
                 slideshowContainer.appendChild(imgDiv);
                 introLayerElements.push(imgDiv);
             });
@@ -402,12 +431,24 @@
             introScreen.style.display = 'flex';
             setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
 
-            let introIdx = 0;
             if (introLayerElements.length > 0) {
                 introSlideInterval = setInterval(() => {
-                    introLayerElements[introIdx].classList.remove('active');
-                    introIdx = (introIdx + 1) % introLayerElements.length;
-                    introLayerElements[introIdx].classList.add('active');
+                    // Remove active from the currently displayed photo
+                    let currentIdx = introShuffledIndices[currentIntroShuffleIndex];
+                    introLayerElements[currentIdx].classList.remove('active');
+                    
+                    // Move to next card in the deck
+                    currentIntroShuffleIndex++;
+                    
+                    // If deck is empty, shuffle again!
+                    if (currentIntroShuffleIndex >= introShuffledIndices.length) {
+                        shuffleArray(introShuffledIndices);
+                        currentIntroShuffleIndex = 0;
+                    }
+                    
+                    // Add active to the new photo
+                    let nextIdx = introShuffledIndices[currentIntroShuffleIndex];
+                    introLayerElements[nextIdx].classList.add('active');
                 }, 100);
             }
 
@@ -526,8 +567,6 @@
                 }
             }, 2000);
         }
-        
-        let currentPhotoIndex = 0;
 
         const syncedWishes = [
             { time: 0.0, text: "Happy Birthday to you, Roshni! May you have a wonderful year ahead!" },
@@ -590,18 +629,31 @@
             }
         });
 
+        // 🖼️ UPDATED PHOTO CHANGER WITH RANDOM DECK LOGIC
         function changePhotos() {
             const frame = document.getElementById('photo-frame');
             const bg = document.getElementById('bg-slide');
             if(frame && bg && photos.length > 0) {
+                
+                // If we've shown all photos in this round, reshuffle the deck!
+                if (currentMainShuffleIndex >= mainShuffledIndices.length) {
+                    shuffleArray(mainShuffledIndices);
+                    currentMainShuffleIndex = 0;
+                }
+                
+                // Pick the next photo from our shuffled deck
+                let actualPhotoIndex = mainShuffledIndices[currentMainShuffleIndex];
+
                 let img = new Image();
                 img.onload = function() {
-                    frame.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
-                    bg.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
-                    currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+                    frame.style.backgroundImage = `url('${photos[actualPhotoIndex]}')`;
+                    bg.style.backgroundImage = `url('${photos[actualPhotoIndex]}')`;
+                    currentMainShuffleIndex++;
                 };
-                img.onerror = function() { currentPhotoIndex = (currentPhotoIndex + 1) % photos.length; };
-                img.src = photos[currentPhotoIndex];
+                img.onerror = function() { 
+                    currentMainShuffleIndex++; // Skip gracefully if image doesn't exist
+                };
+                img.src = photos[actualPhotoIndex];
             }
         }
 
@@ -611,7 +663,9 @@
                 const music1 = document.getElementById('bg-music');
                 if (music1) music1.play().catch(err => console.log("Audio 1 blocked by browser:", err));
 
-                changePhotos(); setInterval(changePhotos, 3500); spawnFireflies(); 
+                changePhotos(); 
+                setInterval(changePhotos, 3500); 
+                spawnFireflies(); 
 
                 if (song2Element) {
                     song2Element.muted = true; 
