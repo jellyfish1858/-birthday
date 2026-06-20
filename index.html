@@ -154,7 +154,7 @@
             padding: 50px;
             border-radius: 20px;
             text-align: left;
-            /* REMOVED position: relative; so the button matches your very first code and doesn't get hidden */
+            position: relative; /* REQUIRED to keep the button inside the boundaries */
             font-family: 'Playfair Display', serif;
             background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
             backdrop-filter: blur(2px);
@@ -206,7 +206,7 @@
         .btn-yes { background-color: #d61c38; color: white; }
         .btn-yes:hover { background-color: #a8152b; transform: scale(1.05); box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6); }
         
-        /* NO BUTTON EXACTLY AS YOUR FIRST CODE */
+        /* NO BUTTON Z-INDEX ENSURES IT NEVER GOES BEHIND TEXT */
         .btn-no { background-color: #333; color: white; position: relative; z-index: 1000; } 
 
         /* Right Side: Photo Frame */
@@ -522,12 +522,21 @@
             }
         }
 
-        /* EXACT Original "No" Button Logic (Restored per your request) */
+        /* 🟢 THE FIX: Dodge button factoring in the exact scroll position */
         const noBtn = document.getElementById('btn-no');
         function dodgeButton() {
             const container = document.querySelector('.love-letter');
-            const x = Math.random() * (container.clientWidth - noBtn.clientWidth - 20);
-            const y = Math.random() * (container.clientHeight - noBtn.clientHeight - 20);
+            
+            // Calculate max X width based on container
+            const maxX = container.clientWidth - noBtn.clientWidth - 20;
+            
+            // Calculate max Y height based on the VISIBLE screen area (clientHeight)
+            const maxY = container.clientHeight - noBtn.clientHeight - 20;
+            
+            // Add container.scrollTop! This guarantees the button jumps to the 
+            // exact part of the letter she is currently looking at, not hidden at the top.
+            const x = Math.max(10, Math.random() * maxX);
+            const y = container.scrollTop + Math.max(10, Math.random() * maxY);
             
             noBtn.style.position = 'absolute';
             noBtn.style.left = `${x}px`;
