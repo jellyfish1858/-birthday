@@ -71,7 +71,7 @@
             transition: opacity 1s ease;
             overflow: hidden;
         }
-        /* NEW: Rapid Photo Montage Layer */
+        /* NEW: Rapid Photo Montage Layer (Transition removed for instant cuts) */
         #intro-slideshow {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -79,7 +79,6 @@
             background-position: center;
             opacity: 0.4; /* Blends the photos with the pink background */
             z-index: 1; /* Behind the hearts and button */
-            transition: background-image 0.1s ease-in-out;
         }
         .heart-drop {
             position: absolute;
@@ -549,7 +548,7 @@
             introScreen.style.display = 'flex';
             setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
 
-            // Start Rapid Photo Montage (Changes every 300ms)
+            // Start Rapid Photo Montage (Changes every 100ms)
             let introIdx = 0;
             const introBg = document.getElementById('intro-slideshow');
             if (photos.length > 0) {
@@ -557,7 +556,7 @@
                 introSlideInterval = setInterval(() => {
                     introIdx = (introIdx + 1) % photos.length;
                     introBg.style.backgroundImage = `url('${photos[introIdx]}')`;
-                }, 300);
+                }, 100);
             }
 
             // Start Raining Hearts
