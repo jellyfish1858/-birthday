@@ -166,7 +166,7 @@
             width: 100%; max-width: 550px; aspect-ratio: 3/4; border: 8px solid white; border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.7); position: relative; overflow: hidden; animation: fadeIn 2s ease-in-out;
         }
-        /* New CSS for smooth photo transitions */
+        
         .photo-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-size: contain; background-position: center; background-repeat: no-repeat;
@@ -498,7 +498,7 @@
         noBtn.addEventListener('mouseover', dodgeButton);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); });
 
-        /* NEW: Romantic Story Sequence after clicking YES */
+        /* EXTENDED: 50-Second Romantic Story Sequence after clicking YES */
         function acceptProposal() {
             document.getElementById('part1').style.opacity = '0';
             
@@ -511,37 +511,45 @@
                 storyScreen.style.display = 'flex';
                 setTimeout(() => { storyScreen.style.opacity = '1'; }, 100);
                 
-                // Story Animation Steps
+                // Expanded 8-part story
                 const storySteps = [
                     "💍<br><span style='font-size:2rem; font-style: italic; color: #ffb6c1;'>You said YES...</span>",
-                    "👩‍❤️‍👨<br><span style='font-size:2rem; color: #fed330;'>Two souls, stepping into forever.</span>",
-                    "🏡<br><span style='font-size:2rem; color: #2ed573;'>Building a beautiful life together...</span>",
-                    "🌅<br><span style='font-size:2rem; color: #1e90ff;'>Taking care of each other, for a lifetime.</span>"
+                    "❤️<br><span style='font-size:2rem; color: #fed330;'>The most beautiful word my heart has ever heard.</span>",
+                    "👩‍❤️‍👨<br><span style='font-size:2rem; color: #ff9a9e;'>Two souls, finally stepping into forever.</span>",
+                    "👣<br><span style='font-size:2rem; color: #a55eea;'>Walking hand in hand through all of life's journeys...</span>",
+                    "🏡<br><span style='font-size:2rem; color: #2ed573;'>Building a beautiful, peaceful life together...</span>",
+                    "🌟<br><span style='font-size:2rem; color: #1e90ff;'>Sharing our dreams, our laughs, and our quiet moments.</span>",
+                    "🤝<br><span style='font-size:2rem; color: #ffd700;'>Taking care of each other, no matter what comes our way.</span>",
+                    "♾️<br><span style='font-size:2rem; font-weight: bold; color: #ff4757;'>For a lifetime, and beyond.</span>"
                 ];
                 
                 let step = 0;
                 
                 function playStory() {
                     if(step < storySteps.length) {
-                        storyContent.style.opacity = '0';
+                        storyContent.style.opacity = '0'; // Fade out current text
                         setTimeout(() => {
                             storyContent.innerHTML = storySteps[step];
-                            storyContent.style.opacity = '1'; 
+                            storyContent.style.opacity = '1'; // Fade in next text
                             step++;
-                            setTimeout(playStory, 3500); 
-                        }, 1000); 
+                            
+                            // Hold the text on screen for 5 seconds before fading out again
+                            setTimeout(playStory, 5000); 
+                        }, 1500); // 1.5 second slow, romantic fade transition
                     } else {
-                        // End of story, trigger part 2 fireworks
+                        // End of the long story, trigger part 2 fireworks
                         storyContent.style.opacity = '0';
                         setTimeout(() => {
                             storyScreen.style.opacity = '0';
                             setTimeout(() => {
                                 storyScreen.style.display = 'none';
                                 launchPart2();
-                            }, 1000);
-                        }, 1000);
+                            }, 1500);
+                        }, 1500);
                     }
                 }
+                
+                // Start the sequence
                 playStory();
                 
             }, 2000); 
@@ -623,7 +631,7 @@
             }
         }
 
-        // NEW: Smooth photo crossfade logic
+        // Smooth photo crossfade logic
         let activeLayer = 1;
 
         function changePhotos() {
