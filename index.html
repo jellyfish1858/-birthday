@@ -29,7 +29,7 @@
             transition: opacity 2s ease-in-out;
         }
         .cinematic-text {
-            color: #fff; font-family: 'Playfair Display', serif; font-size: 3rem;
+            color: #fff; font-family: 'Playfair Display', serif; font-size: 2.5rem;
             opacity: 0; transition: opacity 2s ease-in-out; text-align: center;
             letter-spacing: 3px; font-style: italic;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
@@ -43,12 +43,12 @@
             z-index: 1002; transition: opacity 1s ease; opacity: 0;
         }
         .gift-box {
-            font-size: 8rem; cursor: pointer; animation: shakeGift 1.5s infinite;
+            font-size: 7rem; cursor: pointer; animation: shakeGift 1.5s infinite;
             transition: transform 0.3s ease; user-select: none;
         }
         .gift-box:hover { transform: scale(1.1); animation: none; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4)); }
         .gift-box:active { transform: scale(0.9); }
-        .gift-text { margin-top: 20px; font-size: 1.8rem; letter-spacing: 2px; font-weight: 300; }
+        .gift-text { margin-top: 20px; font-size: 1.5rem; letter-spacing: 2px; font-weight: 300; }
         
         @keyframes shakeGift {
             0% { transform: rotate(0deg); }
@@ -82,7 +82,7 @@
         @keyframes fallHeart { to { transform: translateY(115vh) rotate(360deg); } }
         
         #ready-btn {
-            display: none; padding: 18px 50px; font-size: 1.8rem; font-weight: bold;
+            display: none; padding: 18px 50px; font-size: 1.5rem; font-weight: bold;
             background-color: #d61c38; color: white; border: none; border-radius: 50px;
             cursor: pointer; z-index: 10; box-shadow: 0 5px 20px rgba(214, 28, 56, 0.5);
             animation: fadeIn 1s ease, pulseBtn 2s infinite;
@@ -103,10 +103,10 @@
             flex-direction: column; justify-content: center; align-items: center;
             z-index: 999; opacity: 0; transition: opacity 1s ease;
         }
-        #welcome-text { margin-bottom: 30px; font-size: 3rem; font-family: 'Playfair Display', serif; font-weight: 300; letter-spacing: 2px; transition: opacity 0.5s ease; }
+        #welcome-text { margin-bottom: 30px; font-size: 2.5rem; font-family: 'Playfair Display', serif; font-weight: 300; letter-spacing: 2px; transition: opacity 0.5s ease; }
 
         .envelope-btn {
-            font-size: 7rem; cursor: pointer; animation: pulse 2s infinite;
+            font-size: 6rem; cursor: pointer; animation: pulse 2s infinite;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
             user-select: none;
         }
@@ -150,28 +150,28 @@
         .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
 
         .letter-title {
-            font-family: 'Great Vibes', cursive; font-size: 3.8rem; color: #d61c38; margin-bottom: 25px;
+            font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: #d61c38; margin-bottom: 25px;
             text-align: center; font-weight: normal; border-bottom: 1px solid rgba(214, 28, 56, 0.3);
             padding-bottom: 15px; text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
         }
         
         .love-letter p {
-            font-size: 1.15rem; line-height: 1.8; color: #1a0505;  margin-bottom: 20px;
+            font-size: 1rem; line-height: 1.8; color: #1a0505;  margin-bottom: 20px;
             font-weight: 600;  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9);
         }
 
         .letter-signature {
-            margin-top: 40px; font-size: 1.3rem !important; color: #d61c38 !important; 
+            margin-top: 40px; font-size: 1.15rem !important; color: #d61c38 !important; 
             text-align: center; font-weight: 700 !important; border-top: 1px solid rgba(214, 28, 56, 0.3); padding-top: 25px;
         }
         .highlight-name {
-            display: block; font-family: 'Segoe UI', sans-serif; font-size: 2rem; color: #d61c38;
+            display: block; font-family: 'Segoe UI', sans-serif; font-size: 1.8rem; color: #d61c38;
             margin-top: 15px; letter-spacing: 3px; font-weight: 900;
         }
 
         .proposal-container { margin-top: 40px; display: flex; justify-content: center; gap: 30px; padding-bottom: 20px; transition: opacity 0.5s ease; }
         .btn-proposal {
-            padding: 15px 45px; font-size: 1.5rem; font-weight: bold; border: none; border-radius: 40px;
+            padding: 15px 45px; font-size: 1.3rem; font-weight: bold; border: none; border-radius: 40px;
             cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-family: 'Segoe UI', sans-serif;
         }
         .btn-yes { background-color: #d61c38; color: white; }
@@ -184,7 +184,7 @@
             animation: fadeIn 1s ease; padding-bottom: 30px; position: relative;
         }
         #fingerprint-text {
-            font-family: 'Segoe UI', sans-serif; font-size: 1.5rem; color: #d61c38;
+            font-family: 'Segoe UI', sans-serif; font-size: 1.3rem; color: #d61c38;
             font-weight: bold; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8);
             letter-spacing: 1px;
         }
@@ -269,7 +269,7 @@
             opacity: 0; transition: opacity 1s ease;
         }
         #story-content {
-            font-size: 3rem; opacity: 0; transition: opacity 1.5s ease; text-align: center; 
+            font-size: 2.5rem; opacity: 0; transition: opacity 1.5s ease; text-align: center; 
             font-family: 'Playfair Display', serif; padding: 40px; line-height: 1.6;
             text-shadow: 0 5px 20px rgba(0,0,0,0.8);
         }
@@ -278,18 +278,20 @@
         #part2 {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffb6c1;
             background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('kerala.jpg');
-            background-size: cover; background-position: center;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 2s ease-in-out; z-index: 10;
         }
         .rainbow-text {
-            font-size: 5rem; font-weight: 900; margin-bottom: 40px; padding: 0 20px; z-index: 11;
+            font-size: 4rem; font-weight: 900; margin-bottom: 40px; padding: 0 20px; z-index: 11;
             background: linear-gradient(to right, #ff4757, #ffa500, #fed330, #2ed573, #1e90ff, #a55eea, #ff4757);
             background-size: 400% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: rainbow 5s linear infinite; text-align: center;
         }
         #multilingual-box { width: 85%; max-width: 900px; min-height: 200px; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease-in-out; z-index: 11; }
-        #multilingual-wish { font-size: 3rem; font-weight: bold; color: #ffd700; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); transition: opacity 0.4s ease-in-out; opacity: 0; text-align: center; }
+        #multilingual-wish { font-size: 2.5rem; font-weight: bold; color: #ffd700; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); transition: opacity 0.4s ease-in-out; opacity: 0; text-align: center; }
         #fireworks-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; display: none; }
 
         /* Animations */
@@ -342,7 +344,7 @@
             <div class="text-column">
                 <div class="love-letter">
                     <h1 class="letter-title">To My Soulmate, On Your Birthday</h1>
-                    <p style="font-style: italic; font-size: 1.25rem;">To the absolute love of my life,</p>
+                    <p style="font-style: italic; font-size: 1.1rem;">To the absolute love of my life,</p>
                     <p>Happy Birthday.</p>
                     <p>I have been trying to find the perfect words to capture what you mean to me, but sometimes I think no language is deep enough to hold the weight of my love for you. From the moment our paths crossed, I realized I hadn't just found a lover; I had found the mirror to my own soul.</p>
                     <p>We think the same. Our ideas flow together effortlessly, and our visions for life align so perfectly that I often feel you can hear my thoughts before I even speak them. We have walked through so much together—standing strong through the heavy struggles and laughing our way through the most beautiful, unforgettable moments. Every hardship we've faced has only proven that we are an unbreakable team, and every joy we've shared has cemented the fact that life is only colorful when you are by my side.</p>
@@ -689,14 +691,14 @@
                 setTimeout(() => { storyScreen.style.opacity = '1'; }, 100);
                 
                 const storySteps = [
-                    "💍<br><span style='font-size:3rem; font-style: italic; color: #ffb6c1;'>You said YES...</span>",
-                    "❤️<br><span style='font-size:3rem; color: #fed330;'>The most beautiful word my heart has ever heard.</span>",
-                    "👩‍❤️‍👨<br><span style='font-size:3rem; color: #ff9a9e;'>Two souls, finally stepping into forever.</span>",
-                    "👣<br><span style='font-size:3rem; color: #a55eea;'>Walking hand in hand through all of life's journeys...</span>",
-                    "🏡<br><span style='font-size:3rem; color: #2ed573;'>Building a beautiful, peaceful life together...</span>",
-                    "🌟<br><span style='font-size:3rem; color: #1e90ff;'>Sharing our dreams, our laughs, and our quiet moments.</span>",
-                    "🤝<br><span style='font-size:3rem; color: #ffd700;'>Taking care of each other, no matter what comes our way.</span>",
-                    "♾️<br><span style='font-size:3.5rem; font-weight: bold; color: #ff4757;'>For a lifetime, and beyond.</span>"
+                    "💍<br><span style='font-size:2.5rem; font-style: italic; color: #ffb6c1;'>You said YES...</span>",
+                    "❤️<br><span style='font-size:2.5rem; color: #fed330;'>The most beautiful word my heart has ever heard.</span>",
+                    "👩‍❤️‍👨<br><span style='font-size:2.5rem; color: #ff9a9e;'>Two souls, finally stepping into forever.</span>",
+                    "👣<br><span style='font-size:2.5rem; color: #a55eea;'>Walking hand in hand through all of life's journeys...</span>",
+                    "🏡<br><span style='font-size:2.5rem; color: #2ed573;'>Building a beautiful, peaceful life together...</span>",
+                    "🌟<br><span style='font-size:2.5rem; color: #1e90ff;'>Sharing our dreams, our laughs, and our quiet moments.</span>",
+                    "🤝<br><span style='font-size:2.5rem; color: #ffd700;'>Taking care of each other, no matter what comes our way.</span>",
+                    "♾️<br><span style='font-size:3rem; font-weight: bold; color: #ff4757;'>For a lifetime, and beyond.</span>"
                 ];
                 
                 let step = 0;
