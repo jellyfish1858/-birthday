@@ -11,7 +11,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
+            background-color: #000;
             color: #fff;
             overflow: hidden; 
             height: 100vh;    
@@ -21,20 +21,34 @@
             text-align: center;
         }
 
+        /* 🎬 Cinematic Opening Screen */
+        #cinematic-intro {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 2000; display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
+            transition: opacity 2s ease-in-out;
+        }
+        .cinematic-text {
+            color: #fff; font-family: 'Playfair Display', serif; font-size: 3rem;
+            opacity: 0; transition: opacity 2s ease-in-out; text-align: center;
+            letter-spacing: 3px; font-style: italic;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
         /* 🎁 Screen 1: Gift Box */
         #gift-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #2b0a3d, #000000);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 1002; transition: opacity 1s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #2b0a3d, #000000); display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1002; transition: opacity 1s ease; opacity: 0;
         }
         .gift-box {
-            font-size: 7rem; cursor: pointer; animation: shakeGift 1.5s infinite;
-            transition: transform 0.3s ease; user-select: none; -webkit-tap-highlight-color: transparent;
+            font-size: 8rem; cursor: pointer; animation: shakeGift 1.5s infinite;
+            transition: transform 0.3s ease; user-select: none;
         }
+        .gift-box:hover { transform: scale(1.1); animation: none; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4)); }
         .gift-box:active { transform: scale(0.9); }
-        .gift-text { margin-top: 20px; font-size: 1.5rem; letter-spacing: 2px; font-weight: 300; }
+        .gift-text { margin-top: 20px; font-size: 1.8rem; letter-spacing: 2px; font-weight: 300; }
         
         @keyframes shakeGift {
             0% { transform: rotate(0deg); }
@@ -68,11 +82,14 @@
         @keyframes fallHeart { to { transform: translateY(115vh) rotate(360deg); } }
         
         #ready-btn {
-            display: none; padding: 15px 40px; font-size: 1.5rem; font-weight: bold;
-            background-color: #d61c38; color: white; border: none; border-radius: 40px;
+            display: none; padding: 18px 50px; font-size: 1.8rem; font-weight: bold;
+            background-color: #d61c38; color: white; border: none; border-radius: 50px;
             cursor: pointer; z-index: 10; box-shadow: 0 5px 20px rgba(214, 28, 56, 0.5);
             animation: fadeIn 1s ease, pulseBtn 2s infinite;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
+        #ready-btn:hover { background-color: #a8152b; transform: scale(1.1); animation: none; }
+        
         @keyframes pulseBtn {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -86,15 +103,16 @@
             flex-direction: column; justify-content: center; align-items: center;
             z-index: 999; opacity: 0; transition: opacity 1s ease;
         }
-        #welcome-text { margin-bottom: 20px; font-weight: 300; letter-spacing: 1px; transition: opacity 0.5s ease; }
+        #welcome-text { margin-bottom: 30px; font-size: 3rem; font-family: 'Playfair Display', serif; font-weight: 300; letter-spacing: 2px; transition: opacity 0.5s ease; }
 
         .envelope-btn {
-            font-size: 5.5rem; cursor: pointer; animation: pulse 2s infinite;
+            font-size: 7rem; cursor: pointer; animation: pulse 2s infinite;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
-            user-select: none; -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
+        .envelope-btn:hover { transform: scale(1.1); animation: none; filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5)); }
         .envelope-btn:active { transform: scale(0.9); }
-        .envelope-btn.open-anim { transform: scale(4) translateY(-10px); opacity: 0; pointer-events: none; animation: none; }
+        .envelope-btn.open-anim { transform: scale(5) translateY(-10px); opacity: 0; pointer-events: none; animation: none; }
 
         /* Firecracker Sparks & Fireflies */
         .spark { position: absolute; width: 10px; height: 10px; border-radius: 50%; pointer-events: none; z-index: 1005; }
@@ -113,70 +131,94 @@
         .slideshow-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background-size: cover; background-position: center;
-            filter: blur(12px) brightness(25%); transition: background-image 1.5s ease-in-out;
+            filter: blur(15px) brightness(30%); transition: background-image 1.5s ease-in-out;
         }
 
         /* Left Side: Love Letter */
         .text-column { flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; padding: 40px; z-index: 2; }
         
         .love-letter {
-            width: 100%; max-width: 650px; max-height: 85vh; overflow-y: auto;
-            padding: 50px; border-radius: 20px; text-align: left; position: relative; 
+            width: 100%; max-width: 750px; max-height: 85vh; overflow-y: auto;
+            padding: 50px 60px; border-radius: 20px; text-align: left; position: relative; 
             font-family: 'Playfair Display', serif;
-            background: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('LOVELETTER BACKGROUND.png') center/100% 100% no-repeat;
-            backdrop-filter: blur(2px); box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            border: 2px solid rgba(214, 28, 56, 0.3); animation: fadeIn 2s ease-in-out;
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)); /* Removed missing image dependency for cleaner look */
+            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border: 2px solid rgba(214, 28, 56, 0.4); animation: fadeIn 2s ease-in-out;
         }
         .love-letter::-webkit-scrollbar { width: 8px; }
         .love-letter::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .love-letter::-webkit-scrollbar-thumb { background: #d61c38; border-radius: 10px; }
 
         .letter-title {
-            font-family: 'Great Vibes', cursive; font-size: 3.8rem; color: #d61c38; margin-bottom: 25px;
-            text-align: center; font-weight: normal; border-bottom: 1px solid rgba(214, 28, 56, 0.3);
+            font-family: 'Great Vibes', cursive; font-size: 4.5rem; color: #d61c38; margin-bottom: 25px;
+            text-align: center; font-weight: normal; border-bottom: 2px solid rgba(214, 28, 56, 0.3);
             padding-bottom: 15px; text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
         }
         
         .love-letter p {
-            font-size: 1.15rem; line-height: 1.8; color: #1a0505;  margin-bottom: 20px;
-            font-weight: 600;  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9);
+            font-size: 1.25rem; line-height: 1.9; color: #1a0505;  margin-bottom: 20px;
+            font-weight: 500;
         }
 
         .letter-signature {
-            margin-top: 40px; font-size: 1.3rem !important; color: #d61c38 !important; 
-            text-align: center; font-weight: 700 !important; border-top: 1px solid rgba(214, 28, 56, 0.3); padding-top: 25px;
+            margin-top: 50px; font-size: 1.4rem !important; color: #d61c38 !important; 
+            text-align: center; font-weight: 700 !important; border-top: 2px solid rgba(214, 28, 56, 0.3); padding-top: 25px;
         }
         .highlight-name {
-            display: block; font-family: 'Segoe UI', sans-serif; font-size: 2rem; color: #d61c38;
-            margin-top: 15px; letter-spacing: 3px; font-weight: 900;
+            display: block; font-family: 'Segoe UI', sans-serif; font-size: 2.5rem; color: #d61c38;
+            margin-top: 15px; letter-spacing: 4px; font-weight: 900;
         }
 
-        .proposal-container { margin-top: 30px; display: flex; justify-content: center; gap: 20px; padding-bottom: 20px; transition: opacity 0.5s ease; }
+        .proposal-container { margin-top: 40px; display: flex; justify-content: center; gap: 30px; padding-bottom: 20px; transition: opacity 0.5s ease; }
         .btn-proposal {
-            padding: 12px 35px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 30px;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-family: 'Segoe UI', sans-serif;
+            padding: 15px 45px; font-size: 1.5rem; font-weight: bold; border: none; border-radius: 40px;
+            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-family: 'Segoe UI', sans-serif;
         }
         .btn-yes { background-color: #d61c38; color: white; }
-        .btn-yes:hover { background-color: #a8152b; transform: scale(1.05); box-shadow: 0 6px 20px rgba(214, 28, 56, 0.6); }
+        .btn-yes:hover { background-color: #a8152b; transform: scale(1.1); box-shadow: 0 8px 25px rgba(214, 28, 56, 0.7); }
         .btn-no { background-color: #333; color: white; position: relative; z-index: 1000; } 
 
-        /* 👆 Fingerprint Seal Phase */
+        /* 👆 Laptop Optimized Fingerprint Seal Phase */
         #fingerprint-container {
-            display: none; flex-direction: column; align-items: center; margin-top: 30px;
-            animation: fadeIn 1s ease; padding-bottom: 20px;
+            display: none; flex-direction: column; align-items: center; margin-top: 40px;
+            animation: fadeIn 1s ease; padding-bottom: 30px; position: relative;
         }
         #fingerprint-text {
-            font-family: 'Segoe UI', sans-serif; font-size: 1.2rem; color: #d61c38;
-            font-weight: bold; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            font-family: 'Segoe UI', sans-serif; font-size: 1.5rem; color: #d61c38;
+            font-weight: bold; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            letter-spacing: 1px;
         }
+        
+        .fingerprint-wrapper {
+            position: relative; width: 120px; height: 120px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        .fingerprint-ring {
+            position: absolute; width: 100%; height: 100%;
+            border: 3px dashed rgba(214, 28, 56, 0.6); border-radius: 50%;
+            animation: spinRing 8s linear infinite; pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
         .fingerprint-btn {
             width: 80px; height: 80px; cursor: pointer; user-select: none;
-            -webkit-tap-highlight-color: transparent; transition: transform 0.2s ease, filter 0.2s ease;
-            filter: drop-shadow(0 0 10px rgba(214, 28, 56, 0.6));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+            filter: drop-shadow(0 0 15px rgba(214, 28, 56, 0.6)); position: relative; z-index: 2;
         }
+        
+        .fingerprint-wrapper:hover .fingerprint-btn {
+            transform: scale(1.15); filter: drop-shadow(0 0 25px rgba(214, 28, 56, 0.9));
+        }
+        .fingerprint-wrapper:hover .fingerprint-ring {
+            border-color: rgba(214, 28, 56, 1); animation-duration: 4s; transform: scale(1.1);
+        }
+
         .fingerprint-btn.holding {
-            transform: scale(0.9); filter: drop-shadow(0 0 30px rgba(214, 28, 56, 1));
+            transform: scale(0.9) !important; filter: drop-shadow(0 0 40px rgba(214, 28, 56, 1)) !important;
         }
+
+        @keyframes spinRing { 100% { transform: rotate(360deg); } }
 
         /* Emotional Heartbeat Overlay */
         #heartbeat-overlay {
@@ -189,9 +231,9 @@
         }
         @keyframes vignetteHeartbeat {
             0% { box-shadow: inset 0 0 20px rgba(214, 28, 56, 0.1); }
-            20% { box-shadow: inset 0 0 150px rgba(214, 28, 56, 0.8); }
+            20% { box-shadow: inset 0 0 250px rgba(214, 28, 56, 0.8); }
             40% { box-shadow: inset 0 0 20px rgba(214, 28, 56, 0.1); }
-            60% { box-shadow: inset 0 0 150px rgba(214, 28, 56, 0.8); }
+            60% { box-shadow: inset 0 0 250px rgba(214, 28, 56, 0.8); }
             100% { box-shadow: inset 0 0 20px rgba(214, 28, 56, 0.1); }
         }
 
@@ -205,13 +247,15 @@
         /* Right Side: Photo Frame */
         .image-column { flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; padding: 40px; z-index: 2; }
         .photo-frame {
-            width: 100%; max-width: 550px; aspect-ratio: 3/4; border: 8px solid white; border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7); position: relative; overflow: hidden; animation: fadeIn 2s ease-in-out;
+            width: 100%; max-width: 600px; aspect-ratio: 3/4; border: 12px solid white; border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.8); position: relative; overflow: hidden; animation: fadeIn 2s ease-in-out;
+            transform: rotate(2deg); transition: transform 0.5s ease;
         }
+        .photo-frame:hover { transform: rotate(0deg) scale(1.02); }
         
         .photo-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: contain; background-position: center; background-repeat: no-repeat;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
             transition: opacity 1.5s ease-in-out;
         }
         #photo-layer-2 { opacity: 0; }
@@ -224,52 +268,41 @@
             opacity: 0; transition: opacity 1s ease;
         }
         #story-content {
-            font-size: 2.5rem; opacity: 0; transition: opacity 1.5s ease; text-align: center; 
-            font-family: 'Playfair Display', serif; padding: 20px; line-height: 1.5;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            body { display: block; height: auto; min-height: 100vh; overflow-y: auto !important; overflow-x: hidden; }
-            #main-container { height: auto; min-height: 100vh; }
-            #part1 { flex-direction: column; height: auto; min-height: 100vh; display: flex; }
-            .slideshow-bg { position: fixed; }
-            .image-column { order: -1; padding: 40px 20px 20px 20px; height: auto; }
-            .photo-frame { width: 90%; max-width: 320px; margin: 0 auto; border-width: 4px; }
-            .text-column { padding: 10px 15px 50px 15px; height: auto; }
-            .love-letter { max-height: none; overflow-y: visible; padding: 30px 20px; border-width: 2px; }
-            #part2, #welcome-screen, #fireworks-canvas, #gift-screen, #intro-screen, #story-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+            font-size: 3rem; opacity: 0; transition: opacity 1.5s ease; text-align: center; 
+            font-family: 'Playfair Display', serif; padding: 40px; line-height: 1.6;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.8);
         }
 
         /* Part 2: Multilingual Wishes */
         #part2 {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffb6c1;
-            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('kerala.jpg'), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 80'><path fill='%23ff1493' d='M25 40 C10 40 5 25 5 15 C5 5 15 0 25 10 C35 0 45 5 45 15 C45 25 40 40 25 40 Z'/><path fill='none' stroke='%23ffffff' stroke-width='2' d='M25 40 Q30 55 20 70 T25 80'/></svg>"), linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            background-size: 100% 100%, contain, 100px 140px, 100% 100%;
-            background-position: center, center, center, center;
-            background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('kerala.jpg');
+            background-size: cover; background-position: center;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 2s ease-in-out; z-index: 10;
         }
         .rainbow-text {
-            font-size: 3.5rem; font-weight: 900; margin-bottom: 30px; padding: 0 10px; z-index: 11;
+            font-size: 5rem; font-weight: 900; margin-bottom: 40px; padding: 0 20px; z-index: 11;
             background: linear-gradient(to right, #ff4757, #ffa500, #fed330, #2ed573, #1e90ff, #a55eea, #ff4757);
             background-size: 400% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: rainbow 5s linear infinite;
+            animation: rainbow 5s linear infinite; text-align: center;
         }
-        #multilingual-box { width: 85%; max-width: 700px; min-height: 160px; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease-in-out; z-index: 11; }
-        #multilingual-wish { font-size: 2rem; font-weight: bold; color: #ffd700; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); transition: opacity 0.4s ease-in-out; opacity: 0; }
+        #multilingual-box { width: 85%; max-width: 900px; min-height: 200px; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease-in-out; z-index: 11; }
+        #multilingual-wish { font-size: 3rem; font-weight: bold; color: #ffd700; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); transition: opacity 0.4s ease-in-out; opacity: 0; text-align: center; }
         #fireworks-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; display: none; }
 
         /* Animations */
-        @keyframes pulse { 0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 71, 87, 0.5)); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 35px rgba(255, 71, 87, 1)); } 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 71, 87, 0.5)); } }
+        @keyframes pulse { 0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 71, 87, 0.6)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(255, 71, 87, 1)); } 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 71, 87, 0.6)); } }
         @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: 0.8; transform: translateY(80vh) scale(1); } 80% { opacity: 0.8; transform: translateY(20vh) scale(1); } 100% { transform: translateY(-10vh) scale(0); opacity: 0; } }
     </style>
 </head>
 <body>
+
+    <div id="cinematic-intro">
+        <div id="cinematic-text" class="cinematic-text"></div>
+    </div>
 
     <div id="heartbeat-overlay"></div>
     <div id="flash-screen"></div>
@@ -282,7 +315,7 @@
 
     <div id="gift-screen">
         <div class="gift-box" onclick="openGift(event)">🎁</div>
-        <p class="gift-text">Tap to open!</p>
+        <p class="gift-text">A gift awaits you...</p>
     </div>
 
     <div id="intro-screen">
@@ -308,7 +341,7 @@
             <div class="text-column">
                 <div class="love-letter">
                     <h1 class="letter-title">To My Soulmate, On Your Birthday</h1>
-                    <p style="font-style: italic; font-size: 1.25rem;">To the absolute love of my life,</p>
+                    <p style="font-style: italic; font-size: 1.4rem;">To the absolute love of my life,</p>
                     <p>Happy Birthday.</p>
                     <p>I have been trying to find the perfect words to capture what you mean to me, but sometimes I think no language is deep enough to hold the weight of my love for you. From the moment our paths crossed, I realized I hadn't just found a lover; I had found the mirror to my own soul.</p>
                     <p>We think the same. Our ideas flow together effortlessly, and our visions for life align so perfectly that I often feel you can hear my thoughts before I even speak them. We have walked through so much together—standing strong through the heavy struggles and laughing our way through the most beautiful, unforgettable moments. Every hardship we've faced has only proven that we are an unbreakable team, and every joy we've shared has cemented the fact that life is only colorful when you are by my side.</p>
@@ -329,16 +362,20 @@
                     </div>
 
                     <div id="fingerprint-container">
-                        <p id="fingerprint-text">Place your thumb here to seal our future.</p>
-                        <div class="fingerprint-btn" id="fingerprint-btn">
-                            <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="#d61c38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 12v-2a5 5 0 0 0-10 0v2"></path>
-                                <path d="M14 16v-6a2 2 0 0 0-4 0v6"></path>
-                                <path d="M19 16c0-4-1.5-7.5-4-10"></path>
-                                <path d="M5 16c0-4 1.5-7.5 4-10"></path>
-                                <path d="M12 21a9 9 0 0 1-9-9v-2"></path>
-                                <path d="M21 12v2a9 9 0 0 1-9 9"></path>
-                            </svg>
+                        <p id="fingerprint-text">Click and hold to seal our future.</p>
+                        
+                        <div class="fingerprint-wrapper">
+                            <div class="fingerprint-ring"></div>
+                            <div class="fingerprint-btn" id="fingerprint-btn">
+                                <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="#d61c38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 12v-2a5 5 0 0 0-10 0v2"></path>
+                                    <path d="M14 16v-6a2 2 0 0 0-4 0v6"></path>
+                                    <path d="M19 16c0-4-1.5-7.5-4-10"></path>
+                                    <path d="M5 16c0-4 1.5-7.5 4-10"></path>
+                                    <path d="M12 21a9 9 0 0 1-9-9v-2"></path>
+                                    <path d="M21 12v2a9 9 0 0 1-9 9"></path>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -363,6 +400,46 @@
     </div>
 
     <script>
+        // --- 🎬 Cinematic Intro Logic ---
+        window.addEventListener('load', () => {
+            const cinematicScreen = document.getElementById('cinematic-intro');
+            const cinematicText = document.getElementById('cinematic-text');
+            const giftScreen = document.getElementById('gift-screen');
+            
+            const introPhrases = [
+                "Please turn up your volume...",
+                "A special journey awaits...",
+                "For the one who holds my heart..."
+            ];
+            
+            let currentPhrase = 0;
+
+            function playCinematic() {
+                if (currentPhrase < introPhrases.length) {
+                    cinematicText.innerText = introPhrases[currentPhrase];
+                    cinematicText.style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        cinematicText.style.opacity = '0';
+                        currentPhrase++;
+                        setTimeout(playCinematic, 1500); // Wait in black before next text
+                    }, 2500); // Hold text for 2.5s
+                } else {
+                    // Fade out cinematic background and reveal Gift Box
+                    cinematicScreen.style.opacity = '0';
+                    giftScreen.style.display = 'flex';
+                    setTimeout(() => {
+                        giftScreen.style.opacity = '1';
+                        cinematicScreen.style.display = 'none';
+                    }, 2000);
+                }
+            }
+            
+            // Start the sequence shortly after load
+            setTimeout(playCinematic, 1000);
+        });
+
+
         // Define all 26 photos globally
         const photos = ['photo.jpg'];
         for (let i = 1; i <= 25; i++) {
@@ -417,10 +494,8 @@
             }, 800);
         }
 
-        // UPDATED CONFETTI FUNCTION - Full screen blast with 250 particles
         function createConfetti(x, y) {
             const colors = ['#ff4757', '#ffa500', '#fed330', '#2ed573', '#1e90ff', '#a55eea', '#ffffff'];
-            // Increased to 250 for a massive screen blast
             for(let i = 0; i < 250; i++) {
                 const conf = document.createElement('div');
                 conf.style.position = 'absolute';
@@ -431,7 +506,6 @@
                 document.body.appendChild(conf);
 
                 const angle = Math.random() * Math.PI * 2;
-                // Increased velocity heavily so it shoots to the edges of the screen
                 const velocity = 100 + Math.random() * 800;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity + 200; 
@@ -453,7 +527,7 @@
             setTimeout(() => { introScreen.style.opacity = '1'; }, 100);
 
             if (introLayerElements.length > 0) {
-                // UPDATED SHUFFLE SPEED - Changed from 100ms to 200ms
+                // UPDATED SHUFFLE SPEED: Now blazing fast at 150ms
                 introSlideInterval = setInterval(() => {
                     let currentIdx = introShuffledIndices[currentIntroShuffleIndex];
                     introLayerElements[currentIdx].classList.remove('active');
@@ -466,7 +540,7 @@
                     
                     let nextIdx = introShuffledIndices[currentIntroShuffleIndex];
                     introLayerElements[nextIdx].classList.add('active');
-                }, 200);
+                }, 150);
             }
 
             heartInterval = setInterval(() => {
@@ -477,7 +551,7 @@
                 heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
                 introScreen.appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
-            }, 150);
+            }, 100);
 
             const introAudio = document.getElementById('intro-audio');
             if(introAudio) {
@@ -534,11 +608,9 @@
             }
         }
 
-        // UPDATED FIREFLIES FUNCTION - Increased to 100
         function spawnFireflies() {
             const container = document.getElementById('firefly-container');
-            // Changed from 35 to 100 fireflies
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 150; i++) {
                 let fly = document.createElement('div'); fly.className = 'firefly';
                 fly.style.left = Math.random() * 100 + 'vw';
                 fly.style.animationDuration = (Math.random() * 10 + 10) + 's';
@@ -547,7 +619,7 @@
             }
         }
 
-        /* Dodge NO button logic */
+        /* Dodge NO button logic - Desktop Optimized */
         const noBtn = document.getElementById('btn-no');
         function dodgeButton() {
             const container = document.querySelector('.love-letter');
@@ -561,9 +633,8 @@
             noBtn.style.top = `${y}px`;
         }
         noBtn.addEventListener('mouseover', dodgeButton);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); });
 
-        /* ----------- NEW FINGERPRINT HOLD LOGIC ----------- */
+        /* ----------- DESKTOP FINGERPRINT SEAL LOGIC ----------- */
         let holdTimer;
         const fingerprintBtn = document.getElementById('fingerprint-btn');
         const heartbeatOverlay = document.getElementById('heartbeat-overlay');
@@ -577,17 +648,15 @@
             setTimeout(() => {
                 propContainer.style.display = 'none';
                 fpContainer.style.display = 'flex';
-                // Scroll to the fingerprint so she sees it on mobile
                 fpContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }, 500);
         }
 
         function startHold(e) {
-            e.preventDefault(); // Prevents right-click or scrolling while holding
+            e.preventDefault(); 
             fingerprintBtn.classList.add('holding');
             heartbeatOverlay.classList.add('active');
 
-            // 3000ms = 3 seconds to seal the vow
             holdTimer = setTimeout(() => {
                 triggerSeal();
             }, 3000);
@@ -604,23 +673,18 @@
             fingerprintBtn.classList.remove('holding');
             heartbeatOverlay.classList.remove('active');
             
-            // Flash white screen
             flashScreen.style.opacity = '1';
             flashScreen.style.pointerEvents = 'auto';
 
             setTimeout(() => {
                 flashScreen.style.opacity = '0';
                 flashScreen.style.pointerEvents = 'none';
-                // Start the story and finale once the flash fades
                 acceptProposal();
             }, 1000);
         }
 
-        // Touch & Mouse event listeners for the fingerprint
         fingerprintBtn.addEventListener('mousedown', startHold);
-        fingerprintBtn.addEventListener('touchstart', startHold);
         fingerprintBtn.addEventListener('mouseup', endHold);
-        fingerprintBtn.addEventListener('touchend', endHold);
         fingerprintBtn.addEventListener('mouseleave', endHold);
         /* -------------------------------------------------- */
 
@@ -638,14 +702,14 @@
                 setTimeout(() => { storyScreen.style.opacity = '1'; }, 100);
                 
                 const storySteps = [
-                    "💍<br><span style='font-size:2rem; font-style: italic; color: #ffb6c1;'>You said YES...</span>",
-                    "❤️<br><span style='font-size:2rem; color: #fed330;'>The most beautiful word my heart has ever heard.</span>",
-                    "👩‍❤️‍👨<br><span style='font-size:2rem; color: #ff9a9e;'>Two souls, finally stepping into forever.</span>",
-                    "👣<br><span style='font-size:2rem; color: #a55eea;'>Walking hand in hand through all of life's journeys...</span>",
-                    "🏡<br><span style='font-size:2rem; color: #2ed573;'>Building a beautiful, peaceful life together...</span>",
-                    "🌟<br><span style='font-size:2rem; color: #1e90ff;'>Sharing our dreams, our laughs, and our quiet moments.</span>",
-                    "🤝<br><span style='font-size:2rem; color: #ffd700;'>Taking care of each other, no matter what comes our way.</span>",
-                    "♾️<br><span style='font-size:2rem; font-weight: bold; color: #ff4757;'>For a lifetime, and beyond.</span>"
+                    "💍<br><span style='font-size:3rem; font-style: italic; color: #ffb6c1;'>You said YES...</span>",
+                    "❤️<br><span style='font-size:3rem; color: #fed330;'>The most beautiful word my heart has ever heard.</span>",
+                    "👩‍❤️‍👨<br><span style='font-size:3rem; color: #ff9a9e;'>Two souls, finally stepping into forever.</span>",
+                    "👣<br><span style='font-size:3rem; color: #a55eea;'>Walking hand in hand through all of life's journeys...</span>",
+                    "🏡<br><span style='font-size:3rem; color: #2ed573;'>Building a beautiful, peaceful life together...</span>",
+                    "🌟<br><span style='font-size:3rem; color: #1e90ff;'>Sharing our dreams, our laughs, and our quiet moments.</span>",
+                    "🤝<br><span style='font-size:3rem; color: #ffd700;'>Taking care of each other, no matter what comes our way.</span>",
+                    "♾️<br><span style='font-size:3.5rem; font-weight: bold; color: #ff4757;'>For a lifetime, and beyond.</span>"
                 ];
                 
                 let step = 0;
@@ -676,7 +740,6 @@
             }, 2000); 
         }
 
-        // Multilingual array
         const syncedWishes = [
             { time: 0.0, text: "Happy Birthday to you, Roshni! May you have a wonderful year ahead!" },
             { time: 5.5, text: "Hindi : Roshni, aapko janmadin ki bahut-bahut shubhkamnayen!" },
@@ -752,16 +815,13 @@
             }
         }
 
-        // Smooth photo crossfade logic
         let activeLayer = 1;
-
         function changePhotos() {
             const layer1 = document.getElementById('photo-layer-1');
             const layer2 = document.getElementById('photo-layer-2');
             const bg = document.getElementById('bg-slide');
             
             if(layer1 && layer2 && bg && photos.length > 0) {
-                
                 if (currentMainShuffleIndex >= mainShuffledIndices.length) {
                     shuffleArray(mainShuffledIndices);
                     currentMainShuffleIndex = 0;
@@ -827,11 +887,11 @@
             const colors = ['#ff4757', '#ffa500', '#fed330', '#2ed573', '#1e90ff', '#a55eea', '#ffffff'];
 
             function createExplosion(x, y) {
-                for (let i = 0; i < 60; i++) {
+                for (let i = 0; i < 80; i++) {
                     particles.push({
                         x: x, y: y,
-                        vx: (Math.random() - 0.5) * (Math.random() * 10 + 2),
-                        vy: (Math.random() - 0.5) * (Math.random() * 10 + 2),
+                        vx: (Math.random() - 0.5) * (Math.random() * 15 + 2),
+                        vy: (Math.random() - 0.5) * (Math.random() * 15 + 2),
                         color: colors[Math.floor(Math.random() * colors.length)],
                         alpha: 1, decay: Math.random() * 0.02 + 0.015
                     });
@@ -854,7 +914,7 @@
                     if (p.alpha <= 0) { particles.splice(i, 1); continue; }
 
                     ctx.globalAlpha = p.alpha;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
                     ctx.fillStyle = p.color; ctx.fill();
                 }
             }
