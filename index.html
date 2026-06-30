@@ -211,6 +211,7 @@
 </head>
 <body>
     
+    <audio id="entry-audio"><source src="entry-song.mp3" type="audio/mpeg"></audio>
     <audio id="intro-audio"><source src="intro-song.mp3" type="audio/mpeg"></audio>
     <audio id="bg-music" loop><source src="song.mp3" type="audio/mpeg"></audio>
     <audio id="song2-audio"><source src="song2.mp3" type="audio/mpeg"></audio>
@@ -251,12 +252,13 @@
                 <label class="switch"><input type="checkbox" id="toggle-gift" onchange="toggleGift(this)"><span class="slider"></span></label>
             </div>
             
+            <p id="wait-text" style="color: #ff758c; font-size: 0.9rem; display: none; font-style: italic; margin-top: 15px;">Letting the beautiful song finish... 🎵</p>
+            
             <button class="btn-modern btn-primary" id="btn-proceed" style="margin-top:20px; width:100%; justify-content:center; display:none;" onclick="launchGiftScreen()">Let's Celebrate! 🎉</button>
         </div>
     </div>
     
-    <div class="lights-container" id="lights-container">
-        </div>
+    <div class="lights-container" id="lights-container"></div>
 
     <div id="gift-screen">
         <div class="gift-box" onclick="openGift(event)">🎁</div>
@@ -340,11 +342,29 @@
     </div>
 
     <script>
-        /* --- NEW LOGIC: Countdown & Prompts --- */
+        /* --- NEW LOGIC: Entry Song State --- */
+        let entrySongFinished = false;
+        const entryAudioElement = document.getElementById('entry-audio');
+        
+        if (entryAudioElement) {
+            // Mark the song as finished when it naturally ends
+            entryAudioElement.addEventListener('ended', () => {
+                entrySongFinished = true;
+                checkProceed();
+            });
+            // Fallback in case of loading error
+            entryAudioElement.addEventListener('error', () => {
+                entrySongFinished = true;
+                checkProceed();
+            });
+        }
+
+        /* --- Countdown & Prompts --- */
         let countdownSecs = 3; 
         const cdTimer = setInterval(() => {
             countdownSecs--;
             document.getElementById('cd-secs').innerText = countdownSecs < 10 ? '0' + countdownSecs : countdownSecs;
+            
             if(countdownSecs <= 0) {
                 clearInterval(cdTimer);
                 document.querySelector('.countdown-title').innerHTML = "Happy Birthday Roshni! 🎉<br><span style='font-size:1rem; color:#888'>You mean more to me than words can ever explain</span>";
@@ -364,6 +384,12 @@
 
                 setTimeout(() => {
                     document.getElementById('countdown-screen').style.opacity = '0';
+                    
+                    // Attempt to auto-play entry song immediately after countdown
+                    if (entryAudioElement) {
+                        entryAudioElement.play().catch(e => console.log("Browser blocked auto-play. It will start when 'Yes' is clicked."));
+                    }
+
                     setTimeout(() => {
                         document.getElementById('countdown-screen').style.display = 'none';
                         document.getElementById('interactive-prompt').style.display = 'flex';
@@ -388,6 +414,11 @@
         promptNoBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgePromptButton(); });
 
         function showDecorator() {
+            // Backup Play: If the browser blocked auto-play, this user interaction will unlock it.
+            if (entryAudioElement && entryAudioElement.paused && !entrySongFinished) {
+                entryAudioElement.play().catch(e => console.log(e));
+            }
+
             document.getElementById('question-card').style.display = 'none';
             document.getElementById('decorator-card').style.display = 'block';
             
@@ -412,18 +443,32 @@
         function checkProceed() {
             const l = document.getElementById('toggle-lights').checked;
             const g = document.getElementById('toggle-gift').checked;
+            const btn = document.getElementById('btn-proceed');
+            const waitText = document.getElementById('wait-text');
+
             if(l && g) {
-                document.getElementById('btn-proceed').style.display = 'inline-flex';
+                if (entrySongFinished) {
+                    btn.style.display = 'inline-flex';
+                    waitText.style.display = 'none';
+                } else {
+                    btn.style.display = 'none';
+                    waitText.style.display = 'block'; // Show waiting message if song is still playing
+                }
             } else {
-                document.getElementById('btn-proceed').style.display = 'none';
+                btn.style.display = 'none';
+                waitText.style.display = 'none';
             }
         }
 
         function launchGiftScreen() {
+            // Ensure entry song is paused if we are moving to the next stage
+            if(entryAudioElement) entryAudioElement.pause();
+
             document.getElementById('interactive-prompt').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('interactive-prompt').style.display = 'none';
                 document.getElementById('gift-screen').style.display = 'flex';
+                
                 // Trigger intro audio logic required by browsers
                 const introAudio = document.getElementById('intro-audio');
                 if(introAudio) {
