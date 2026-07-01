@@ -52,6 +52,14 @@
         .btn-primary { background: linear-gradient(45deg, #ff758c 0%, #ff7eb3 100%); color: white; }
         .btn-primary:hover { box-shadow: 0 6px 20px rgba(255, 117, 140, 0.4); }
 
+        /* ✨ Unlock Screen */
+        #start-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1020; transition: opacity 0.8s ease;
+        }
+
         /* ⏳ Screen 0: Countdown (Video Style) */
         #countdown-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -211,6 +219,10 @@
 </head>
 <body>
     
+    <div id="start-screen">
+        <button id="unlock-btn" class="btn-modern btn-primary" style="font-size: 1.5rem; padding: 15px 40px; animation: pulseBtn 2s infinite;">Unlock the Magic ✨</button>
+    </div>
+
     <audio id="entry-audio"><source src="entry-song.mp3" type="audio/mpeg"></audio>
     <audio id="intro-audio"><source src="intro-song.mp3" type="audio/mpeg"></audio>
     <audio id="bg-music" loop><source src="song.mp3" type="audio/mpeg"></audio>
@@ -253,8 +265,6 @@
             </div>
             
             <p id="wait-text" style="color: #ff758c; font-size: 0.9rem; display: none; font-style: italic; margin-top: 15px;">Letting the beautiful song finish... 🎵</p>
-            
-            <button class="btn-modern btn-primary" id="btn-proceed" style="margin-top:20px; width:100%; justify-content:center; display:none;" onclick="launchGiftScreen()">Let's Celebrate! 🎉</button>
         </div>
     </div>
     
@@ -342,17 +352,15 @@
     </div>
 
     <script>
-        /* --- NEW LOGIC: Entry Song State --- */
+        /* --- NEW LOGIC: Entry Song State & Audio Auto-Launch --- */
         let entrySongFinished = false;
         const entryAudioElement = document.getElementById('entry-audio');
         
         if (entryAudioElement) {
-            // Mark the song as finished when it naturally ends
             entryAudioElement.addEventListener('ended', () => {
                 entrySongFinished = true;
-                checkProceed();
+                checkProceed(); // Will automatically transition if toggles are checked
             });
-            // Fallback in case of loading error
             entryAudioElement.addEventListener('error', () => {
                 entrySongFinished = true;
                 checkProceed();
@@ -361,42 +369,59 @@
 
         /* --- Countdown & Prompts --- */
         let countdownSecs = 3; 
-        const cdTimer = setInterval(() => {
-            countdownSecs--;
-            document.getElementById('cd-secs').innerText = countdownSecs < 10 ? '0' + countdownSecs : countdownSecs;
-            
-            if(countdownSecs <= 0) {
-                clearInterval(cdTimer);
-                document.querySelector('.countdown-title').innerHTML = "Happy Birthday Roshni! 🎉<br><span style='font-size:1rem; color:#888'>You mean more to me than words can ever explain</span>";
-                document.getElementById('timer-ui').style.display = 'none';
-                
-                // Show floating balloons
-                for(let i=0; i<15; i++) {
-                    const b = document.createElement('div');
-                    b.innerHTML = '🎈';
-                    b.style.position = 'absolute';
-                    b.style.left = Math.random() * 100 + 'vw';
-                    b.style.bottom = '-50px';
-                    b.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                    b.style.animation = `floatUp ${Math.random()*3 + 3}s linear forwards`;
-                    document.getElementById('countdown-screen').appendChild(b);
-                }
+        let cdTimer;
 
-                setTimeout(() => {
-                    document.getElementById('countdown-screen').style.opacity = '0';
+        document.getElementById('unlock-btn').addEventListener('click', function() {
+            const startScreen = document.getElementById('start-screen');
+            startScreen.style.opacity = '0';
+            setTimeout(() => { startScreen.style.display = 'none'; }, 800);
+
+            // Pre-warm the audio to bypass browser restrictions
+            if (entryAudioElement) {
+                entryAudioElement.play().then(() => {
+                    entryAudioElement.pause();
+                    entryAudioElement.currentTime = 0;
+                }).catch(e => console.log("Audio unlock failed:", e));
+            }
+
+            // Start Countdown
+            cdTimer = setInterval(() => {
+                countdownSecs--;
+                document.getElementById('cd-secs').innerText = countdownSecs < 10 ? '0' + countdownSecs : countdownSecs;
+                
+                if(countdownSecs <= 0) {
+                    clearInterval(cdTimer);
                     
-                    // Attempt to auto-play entry song immediately after countdown
+                    // PLAY AUDIO EXACTLY AT 0
                     if (entryAudioElement) {
-                        entryAudioElement.play().catch(e => console.log("Browser blocked auto-play. It will start when 'Yes' is clicked."));
+                        entryAudioElement.play().catch(e => console.log("Audio blocked", e));
+                    }
+
+                    document.querySelector('.countdown-title').innerHTML = "Happy Birthday Roshni! 🎉<br><span style='font-size:1rem; color:#888'>You mean more to me than words can ever explain</span>";
+                    document.getElementById('timer-ui').style.display = 'none';
+                    
+                    // Show floating balloons
+                    for(let i=0; i<15; i++) {
+                        const b = document.createElement('div');
+                        b.innerHTML = '🎈';
+                        b.style.position = 'absolute';
+                        b.style.left = Math.random() * 100 + 'vw';
+                        b.style.bottom = '-50px';
+                        b.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                        b.style.animation = `floatUp ${Math.random()*3 + 3}s linear forwards`;
+                        document.getElementById('countdown-screen').appendChild(b);
                     }
 
                     setTimeout(() => {
-                        document.getElementById('countdown-screen').style.display = 'none';
-                        document.getElementById('interactive-prompt').style.display = 'flex';
-                    }, 1000);
-                }, 3000);
-            }
-        }, 1000);
+                        document.getElementById('countdown-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('countdown-screen').style.display = 'none';
+                            document.getElementById('interactive-prompt').style.display = 'flex';
+                        }, 1000);
+                    }, 3000);
+                }
+            }, 1000);
+        });
 
         // Dodge logic for the prompt screen "No" button
         const promptNoBtn = document.getElementById('prompt-no');
@@ -414,11 +439,6 @@
         promptNoBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgePromptButton(); });
 
         function showDecorator() {
-            // Backup Play: If the browser blocked auto-play, this user interaction will unlock it.
-            if (entryAudioElement && entryAudioElement.paused && !entrySongFinished) {
-                entryAudioElement.play().catch(e => console.log(e));
-            }
-
             document.getElementById('question-card').style.display = 'none';
             document.getElementById('decorator-card').style.display = 'block';
             
@@ -443,25 +463,21 @@
         function checkProceed() {
             const l = document.getElementById('toggle-lights').checked;
             const g = document.getElementById('toggle-gift').checked;
-            const btn = document.getElementById('btn-proceed');
             const waitText = document.getElementById('wait-text');
 
             if(l && g) {
                 if (entrySongFinished) {
-                    btn.style.display = 'inline-flex';
                     waitText.style.display = 'none';
+                    launchGiftScreen(); // Automatically transition to the gift screen!
                 } else {
-                    btn.style.display = 'none';
                     waitText.style.display = 'block'; // Show waiting message if song is still playing
                 }
             } else {
-                btn.style.display = 'none';
                 waitText.style.display = 'none';
             }
         }
 
         function launchGiftScreen() {
-            // Ensure entry song is paused if we are moving to the next stage
             if(entryAudioElement) entryAudioElement.pause();
 
             document.getElementById('interactive-prompt').style.opacity = '0';
